@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "349956495130",
+    "project_id": "expense-tracker-8bcbc",
+    "storage_bucket": "expense-tracker-8bcbc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349956495130:android:0196cb59d0d8be41ae7ea3",
+        "android_client_info": {
+          "package_name": "live.rahimli.riverpood.riverpod_clean_architecture"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA71bo1dQ-3qvRhTVDsP6dLR7UU5N-hlE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
