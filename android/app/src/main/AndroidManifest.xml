@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="live.rahimli.riverpood.riverpod_clean_architecture">
+    package="com.expesne_tracker.app">
    <application
-        android:label="riverpod_clean_architecture"
+        android:label="expense tracker"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

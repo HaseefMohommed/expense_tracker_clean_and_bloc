@@ -1,7 +1,7 @@
+import 'package:expesne_tracker_app/features/auth/presentation/pages/on_boarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:expesne_tracker_app/app/routes.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
-import 'package:expesne_tracker_app/features/auth/presentation/pages/sign_in_page.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -12,7 +12,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Expense Tracker',
       theme: AppTheme.lightTheme,
-      initialRoute: SignInPage.routeName,
+      initialRoute: OnboardingPage.routeName,
       onGenerateRoute: AppRoutes.onGenerateRoute,
     );
   }

@@ -52,18 +52,11 @@ class _SignInPageState extends State<SignInPage> {
                 SvgPicture.asset(
                   AssetsProvider.logo,
                 ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Monex',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
                 const SizedBox(height: 40),
                 BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state.appState == AppStatus.success) {
+                      context.read<AuthCubit>().resetValidityStatus();
                       Navigator.pushNamed(context, HomePage.routeName);
                     }
                     state.faliure.showError(context, state.appState);
@@ -173,7 +166,9 @@ class _SignInPageState extends State<SignInPage> {
                     name: 'Continue with Google',
                     iconPath: AssetsProvider.google,
                     enabledBorder: true,
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<AuthCubit>().authenticationWithGoogle();
+                    },
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -183,7 +178,9 @@ class _SignInPageState extends State<SignInPage> {
                     name: 'Continue with apple',
                     iconPath: AssetsProvider.apple,
                     enabledBorder: true,
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<AuthCubit>().authenticationWithApple();
+                    },
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -203,6 +200,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
+                            context.read<AuthCubit>().resetValidityStatus();
                             Navigator.pushNamed(context, SignUpPage.routeName);
                           },
                       ),

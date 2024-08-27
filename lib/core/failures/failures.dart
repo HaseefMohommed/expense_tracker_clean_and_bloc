@@ -55,19 +55,27 @@ mixin FailureMessage {
         return _getAppleAuthErrorMessage(code);
       case AuthenticationType.signOut:
         return _getSignOutErrorMessage(code);
+      case AuthenticationType.resetPassword:
+        return _getResetPasswordErrorMessage(code);
     }
   }
 
   String _getSignInErrorMessage(String? code) {
     switch (code) {
-      case 'invalid-email':
-        return 'The email address is not valid.';
-      case 'user-disabled':
-        return 'This user account has been disabled.';
       case 'user-not-found':
         return 'No user found for that email.';
       case 'wrong-password':
         return 'Incorrect password. Please try again.';
+      case 'invalid-email':
+        return 'The email address is not valid.';
+      case 'user-disabled':
+        return 'This user account has been disabled.';
+      case 'too-many-requests':
+        return 'Too many unsuccessful login attempts. Please try again later.';
+      case 'operation-not-allowed':
+        return 'Email/password accounts are not enabled.';
+      case 'network-request-failed':
+        return 'A network error occurred. Please check your connection.';
       default:
         return 'Failed to sign in. Please try again.';
     }
@@ -79,8 +87,12 @@ mixin FailureMessage {
         return 'An account already exists for that email.';
       case 'invalid-email':
         return 'The email address is not valid.';
+      case 'operation-not-allowed':
+        return 'Email/password accounts are not enabled.';
       case 'weak-password':
         return 'The password provided is too weak.';
+      case 'network-request-failed':
+        return 'A network error occurred. Please check your connection.';
       default:
         return 'Failed to create account. Please try again.';
     }
@@ -104,6 +116,8 @@ mixin FailureMessage {
         return 'The credential verification code received is invalid.';
       case 'invalid-verification-id':
         return 'The credential verification ID received is invalid.';
+      case 'network-request-failed':
+        return 'A network error occurred. Please check your connection.';
       default:
         return 'Failed to sign in with Google. Please try again.';
     }
@@ -115,12 +129,40 @@ mixin FailureMessage {
         return 'Apple sign-in is not enabled for this project.';
       case 'auth/invalid-credential':
         return 'The credential received is malformed or has expired.';
+      case 'auth/user-disabled':
+        return 'The user account has been disabled.';
+      case 'auth/user-not-found':
+        return 'No user found for that email.';
+      case 'auth/network-request-failed':
+        return 'A network error occurred. Please check your connection.';
       default:
         return 'Failed to sign in with Apple. Please try again.';
     }
   }
 
+  String _getResetPasswordErrorMessage(String? code) {
+    switch (code) {
+      case 'auth/invalid-email':
+        return 'The email address is not valid.';
+      case 'auth/user-not-found':
+        return 'No user found for that email.';
+      case 'auth/user-disabled':
+        return 'This user account has been disabled.';
+      case 'auth/too-many-requests':
+        return 'Too many requests. Try again later.';
+      case 'auth/network-request-failed':
+        return 'A network error occurred. Please check your connection.';
+      default:
+        return 'Failed to send password reset email. Please try again.';
+    }
+  }
+
   String _getSignOutErrorMessage(String? code) {
-    return 'Failed to sign out. Please try again.';
+    switch (code) {
+      case 'auth/network-request-failed':
+        return 'A network error occurred while signing out. Please check your connection and try again.';
+      default:
+        return 'Failed to sign out. Please try again.';
+    }
   }
 }

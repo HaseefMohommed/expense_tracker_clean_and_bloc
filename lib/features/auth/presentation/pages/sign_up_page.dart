@@ -1,4 +1,5 @@
 import 'package:expesne_tracker_app/core/enums/validity_status.dart';
+import 'package:expesne_tracker_app/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,7 @@ import 'package:expesne_tracker_app/resources/ui_components/buttons/app_button.d
 import 'package:expesne_tracker_app/resources/ui_components/text_field/app_text_field.dart';
 
 class SignUpPage extends StatefulWidget {
-  static String routeName = '/SignUpPage';
+  static String routeName = '/signUpPage';
   const SignUpPage({super.key});
 
   @override
@@ -54,21 +55,14 @@ class _SignUpPageState extends State<SignUpPage> {
                   SvgPicture.asset(
                     AssetsProvider.logo,
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Monex',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                   const SizedBox(height: 40),
                   BlocConsumer<AuthCubit, AuthState>(
                     listener: (context, state) {
                       if (state.appState == AppStatus.success) {
+                        context.read<AuthCubit>().resetValidityStatus();
                         Navigator.pushNamed(context, HomePage.routeName);
                       }
-          
+
                       state.faliure.showError(context, state.appState);
                     },
                     builder: (context, state) {
@@ -115,8 +109,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               prefixIcon: AssetsProvider.padLock,
                               suffixIconVisible: AssetsProvider.visibility,
                               suffixIconHidden: AssetsProvider.visibilityOff,
-                              errorText: switch (
-                                  state.passwordValidityStatus) {
+                              errorText: switch (state.passwordValidityStatus) {
                                 ValidityStatus.valid || null => null,
                                 ValidityStatus.empty => 'Required Feild',
                                 ValidityStatus.invalid => 'invalid password'
@@ -134,15 +127,14 @@ class _SignUpPageState extends State<SignUpPage> {
                                   name: state.appState == AppStatus.loading
                                       ? 'Please wait..'
                                       : 'Sign up',
-                                  onPressed: state.appState ==
-                                          AppStatus.loading
+                                  onPressed: state.appState == AppStatus.loading
                                       ? null
                                       : () {
                                           context
                                               .read<AuthCubit>()
                                               .validateSignUpFields(
-                                                name: _nameController.text
-                                                    .trim(),
+                                                name:
+                                                    _nameController.text.trim(),
                                                 email: _emailController.text
                                                     .trim(),
                                                 password: _passwordController
@@ -164,9 +156,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                                       .trim(),
                                                   email: _emailController.text
                                                       .trim(),
-                                                  password:
-                                                      _passwordController.text
-                                                          .trim(),
+                                                  password: _passwordController
+                                                      .text
+                                                      .trim(),
                                                 );
                                           }
                                         }),
@@ -189,17 +181,21 @@ class _SignUpPageState extends State<SignUpPage> {
                       name: 'Continue with Google',
                       iconPath: AssetsProvider.google,
                       enabledBorder: true,
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<AuthCubit>().authenticationWithGoogle();
+                      },
                     ),
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
                     child: AppButton.icon(
-                      name: 'Continue with Google',
+                      name: 'Continue with Apple',
                       iconPath: AssetsProvider.apple,
                       enabledBorder: true,
-                      onPressed: () {},
+                      onPressed: () {
+                        context.read<AuthCubit>().authenticationWithApple();
+                      },
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -217,7 +213,14 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: AppTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                           ),
-                          recognizer: TapGestureRecognizer()..onTap = () {},
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              context.read<AuthCubit>().resetValidityStatus();
+                              Navigator.pushNamed(
+                                context,
+                                SignInPage.routeName,
+                              );
+                            },
                         ),
                       ],
                     ),

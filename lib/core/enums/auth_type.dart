@@ -3,5 +3,6 @@ enum AuthenticationType {
   signUp,
   google,
   apple,
+  resetPassword,
   signOut
 }

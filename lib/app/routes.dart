@@ -1,3 +1,4 @@
+import 'package:expesne_tracker_app/features/auth/presentation/pages/on_boarding_page.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/reset_sucess_page.dart';
 import 'package:flutter/material.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/reset_password_page.dart';
@@ -15,6 +16,7 @@ abstract class AppRoutes {
     SignUpPage.routeName: (context) => const SignUpPage(),
     ResetPasswordPage.routeName: (context) => const ResetPasswordPage(),
     ResetSucessPage.routeName: (context) => const ResetSucessPage(),
+    OnboardingPage.routeName: (context) => const OnboardingPage(),
   };
 
   // Note: Named pages under routes will not trigger onGenerateRoute!

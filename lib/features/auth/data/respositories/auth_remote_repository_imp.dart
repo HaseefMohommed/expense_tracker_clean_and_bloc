@@ -57,4 +57,76 @@ class AuthRemoteRepositoryImp implements AuthRemoteRepository {
       return left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, UserEntity>> authWithApple() async {
+    try {
+      final result = await authRemoteDataSource.authWithApple();
+      return right(result);
+    } on AuthenticationException catch (e) {
+      return left(
+        AuthenticationFailure(
+          code: e.code,
+          type: AuthenticationType.apple,
+        ),
+      );
+    } on ServerException catch (_) {
+      return left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> authWithGoogle() async {
+    try {
+      final result = await authRemoteDataSource.authWithGoogle();
+      return right(result);
+    } on AuthenticationException catch (e) {
+      return left(
+        AuthenticationFailure(
+          code: e.code,
+          type: AuthenticationType.google,
+        ),
+      );
+    } on ServerException catch (_) {
+      return left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> resetOldPassword({
+    required String email,
+  }) async {
+    try {
+      final result = await authRemoteDataSource.resetPassword(
+        email: email,
+      );
+      return right(result);
+    } on AuthenticationException catch (e) {
+      return left(
+        AuthenticationFailure(
+          code: e.code,
+          type: AuthenticationType.resetPassword,
+        ),
+      );
+    } on ServerException catch (_) {
+      return left(ServerFailure());
+    }
+  }
+  
+  @override
+  Future<Either<Failure, void>> signOutUser()async {
+    try {
+      final result = await authRemoteDataSource.signOut();
+      return right(result);
+    } on AuthenticationException catch (e) {
+      return left(
+        AuthenticationFailure(
+          code: e.code,
+          type: AuthenticationType.signOut,
+        ),
+      );
+    } on ServerException catch (_) {
+      return left(ServerFailure());
+    }
+  }
 }
