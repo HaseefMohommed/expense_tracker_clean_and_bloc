@@ -31,6 +31,8 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final baseColor = isDarkMode ? Colors.white : Colors.black;
     return ValueListenableBuilder<bool>(
       valueListenable: _obscureTextNotifier,
       builder: (context, obscureText, child) {
@@ -63,14 +65,25 @@ class AppTextField extends StatelessWidget {
             prefixIcon: prefixIcon != null
                 ? Padding(
                     padding: const EdgeInsets.all(12),
-                    child: SvgPicture.asset(prefixIcon!),
+                    child: SvgPicture.asset(
+                      prefixIcon!,
+                      colorFilter: ColorFilter.mode(baseColor, BlendMode.srcIn),
+                    ),
                   )
                 : null,
             suffixIcon: isObscureText
                 ? IconButton(
                     icon: obscureText
-                        ? SvgPicture.asset(suffixIconHidden ?? '')
-                        : SvgPicture.asset(suffixIconVisible ?? ''),
+                        ? SvgPicture.asset(
+                            suffixIconHidden ?? '',
+                            colorFilter:
+                                ColorFilter.mode(baseColor, BlendMode.srcIn),
+                          )
+                        : SvgPicture.asset(
+                            suffixIconVisible ?? '',
+                            colorFilter:
+                                ColorFilter.mode(baseColor, BlendMode.srcIn),
+                          ),
                     onPressed: () {
                       _obscureTextNotifier.value = !obscureText;
                     },

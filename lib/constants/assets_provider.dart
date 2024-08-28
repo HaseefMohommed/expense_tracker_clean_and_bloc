@@ -1,7 +1,7 @@
 class AssetsProvider {
   AssetsProvider._();
 
-  // icons
+  //  icons
 
   static const String user = 'assets/icons/user.svg';
   static const String email = 'assets/icons/email.svg';
@@ -14,10 +14,12 @@ class AssetsProvider {
   static const String errorMark = 'assets/icons/error_mark.svg';
   static const String activeIndicator = 'assets/icons/active_indicator.svg';
   static const String inactiveIndicator = 'assets/icons/inactive_indicator.svg';
+  static const String food = 'assets/icons/food.svg';
 
   //Images
 
   static const String logo = 'assets/images/logo.svg';
+  static const String textlogo = 'assets/images/text_logo.svg';
   static const String secondaryLogo = 'assets/images/secondary_logo.svg';
   static const String resetSuccess = 'assets/images/reset_success.svg';
   static const String onBoardingOne = 'assets/images/on_boarding_one.svg';

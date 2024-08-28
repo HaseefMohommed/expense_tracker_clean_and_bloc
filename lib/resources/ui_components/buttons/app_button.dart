@@ -60,6 +60,8 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final baseColor = isDarkMode ? Colors.white : Colors.black;
     return SizedBox(
       height: AppTheme.primaryButtonHeight,
       child: switch (type) {
@@ -126,12 +128,19 @@ class AppButton extends StatelessWidget {
                     )
                   : null,
             ),
-            icon: SvgPicture.asset(iconPath!),
+            icon: isDarkMode
+                ? SvgPicture.asset(
+                    iconPath!,
+                    colorFilter: ColorFilter.mode(baseColor, BlendMode.srcIn),
+                  )
+                : SvgPicture.asset(
+                    iconPath!,
+                  ),
             label: Text(
               name,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: AppTheme.primaryButtonFontSize,
-                color: AppTheme.textColor,
+                color: baseColor,
               ),
             ),
           ),

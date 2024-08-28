@@ -39,6 +39,9 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<AuthCubit>().state;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final baseColor = isDarkMode ? Colors.white : Colors.black;
+
     return Scaffold(
       appBar: AppBar(),
       body: AbsorbPointer(
@@ -54,6 +57,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   SvgPicture.asset(
                     AssetsProvider.logo,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  SvgPicture.asset(
+                    AssetsProvider.textlogo,
+                    colorFilter: ColorFilter.mode(baseColor, BlendMode.srcIn),
                   ),
                   const SizedBox(height: 40),
                   BlocConsumer<AuthCubit, AuthState>(
@@ -76,8 +86,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               prefixIcon: AssetsProvider.user,
                               errorText: switch (state.nameValidityStatus) {
                                 ValidityStatus.valid || null => null,
-                                ValidityStatus.empty => 'Required Feild',
-                                ValidityStatus.invalid => 'invalid email'
+                                ValidityStatus.empty => 'Required Field',
+                                ValidityStatus.invalid => 'Invalid name'
                               },
                               onChanged: (value) {
                                 context
@@ -92,8 +102,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               prefixIcon: AssetsProvider.email,
                               errorText: switch (state.emailValidityStatus) {
                                 ValidityStatus.valid || null => null,
-                                ValidityStatus.empty => 'Required Feild',
-                                ValidityStatus.invalid => 'invalid email'
+                                ValidityStatus.empty => 'Required Field',
+                                ValidityStatus.invalid => 'Invalid email'
                               },
                               onChanged: (value) {
                                 context
@@ -111,8 +121,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               suffixIconHidden: AssetsProvider.visibilityOff,
                               errorText: switch (state.passwordValidityStatus) {
                                 ValidityStatus.valid || null => null,
-                                ValidityStatus.empty => 'Required Feild',
-                                ValidityStatus.invalid => 'invalid password'
+                                ValidityStatus.empty => 'Required Field',
+                                ValidityStatus.invalid => 'Invalid password'
                               },
                               onChanged: (value) {
                                 context
@@ -172,7 +182,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   Text(
                     'Or',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: baseColor,
+                        ),
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
@@ -202,10 +214,12 @@ class _SignUpPageState extends State<SignUpPage> {
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: baseColor,
+                          ),
                       children: [
                         const TextSpan(
-                          text: 'Already Have a Acccount? ',
+                          text: 'Already Have an Account? ',
                         ),
                         TextSpan(
                           text: 'Sign in here',

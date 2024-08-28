@@ -1,4 +1,5 @@
 import 'package:expesne_tracker_app/core/enums/validity_status.dart';
+import 'package:expesne_tracker_app/core/extentions/locale_extention.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,7 +38,11 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     final state = context.watch<AuthCubit>().state;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final baseColor = isDarkMode ? Colors.white : Colors.black;
+
     return Scaffold(
       body: AbsorbPointer(
         absorbing: state.appState == AppStatus.loading,
@@ -51,6 +56,13 @@ class _SignInPageState extends State<SignInPage> {
               children: [
                 SvgPicture.asset(
                   AssetsProvider.logo,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                SvgPicture.asset(
+                  AssetsProvider.textlogo,
+                  colorFilter: ColorFilter.mode(baseColor, BlendMode.srcIn),
                 ),
                 const SizedBox(height: 40),
                 BlocConsumer<AuthCubit, AuthState>(
@@ -72,8 +84,8 @@ class _SignInPageState extends State<SignInPage> {
                             prefixIcon: AssetsProvider.email,
                             errorText: switch (state.emailValidityStatus) {
                               ValidityStatus.valid || null => null,
-                              ValidityStatus.empty => 'Required Feild',
-                              ValidityStatus.invalid => 'invalid email'
+                              ValidityStatus.empty => 'Required Field',
+                              ValidityStatus.invalid => 'Invalid email'
                             },
                             onChanged: (value) {
                               context
@@ -91,8 +103,8 @@ class _SignInPageState extends State<SignInPage> {
                             suffixIconHidden: AssetsProvider.visibilityOff,
                             errorText: switch (state.passwordValidityStatus) {
                               ValidityStatus.valid || null => null,
-                              ValidityStatus.empty => 'Required Feild',
-                              ValidityStatus.invalid => 'invalid password'
+                              ValidityStatus.empty => 'Required Field',
+                              ValidityStatus.invalid => 'Invalid password'
                             },
                             onChanged: (value) {
                               context
@@ -106,7 +118,7 @@ class _SignInPageState extends State<SignInPage> {
                             child: AppButton(
                               name: state.appState == AppStatus.loading
                                   ? 'Please Wait..'
-                                  : 'log in',
+                                  : 'Log in',
                               onPressed: state.appState == AppStatus.loading
                                   ? null
                                   : () {
@@ -144,7 +156,7 @@ class _SignInPageState extends State<SignInPage> {
                 SizedBox(
                   width: double.infinity,
                   child: AppButton.seondary(
-                    name: 'Forgot Passsword',
+                    name: 'Forgot Password',
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
@@ -157,7 +169,9 @@ class _SignInPageState extends State<SignInPage> {
                 Text(
                   'Or',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: baseColor,
+                      ),
                 ),
                 const SizedBox(height: 16),
                 SizedBox(
@@ -175,7 +189,7 @@ class _SignInPageState extends State<SignInPage> {
                 SizedBox(
                   width: double.infinity,
                   child: AppButton.icon(
-                    name: 'Continue with apple',
+                    name: 'Continue with Apple',
                     iconPath: AssetsProvider.apple,
                     enabledBorder: true,
                     onPressed: () {
@@ -187,7 +201,9 @@ class _SignInPageState extends State<SignInPage> {
                 RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: baseColor,
+                        ),
                     children: [
                       const TextSpan(
                         text: "Don't have an account? ",
