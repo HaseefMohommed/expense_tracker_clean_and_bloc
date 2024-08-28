@@ -92,26 +92,29 @@ class SnackBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding:
-            const EdgeInsets.symmetric(horizontal: AppTheme.primaryPadding),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppTheme.primaryPadding,
+          vertical: 8,
+        ),
         child: Row(
           children: [
             SvgPicture.asset(AssetsProvider.errorMark),
-            const SizedBox(
-              width: 4,
-            ),
-            Text(
-              message,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: Colors.white),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.white),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),

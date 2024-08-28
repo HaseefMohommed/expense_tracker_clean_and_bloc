@@ -1,6 +1,7 @@
 import 'package:expesne_tracker_app/core/enums/app_status.dart';
 import 'package:expesne_tracker_app/core/enums/validity_status.dart';
 import 'package:expesne_tracker_app/core/extentions/failure_extention.dart';
+import 'package:expesne_tracker_app/core/extentions/locale_extention.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/bloc/auth_cubit/auth_cubit.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/reset_sucess_page.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state.appState == AppStatus.success) {
@@ -49,16 +51,16 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Rest your password with email',
-                  style: TextStyle(
+                Text(
+                  locale.rest_your_password,
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Enter your email to get the reset password email here.',
+                  locale.enter_your_email,
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 16,
@@ -67,12 +69,12 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 const SizedBox(height: 32),
                 AppTextField(
                   controller: _emailController,
-                  hintText: 'Email',
+                  hintText: locale.email,
                   prefixIcon: AssetsProvider.email,
                   errorText: switch (state.emailValidityStatus) {
                     ValidityStatus.valid || null => null,
-                    ValidityStatus.empty => 'Required Field',
-                    ValidityStatus.invalid => 'Invalid password'
+                    ValidityStatus.empty => locale.requird_field,
+                    ValidityStatus.invalid => locale.invaild_password
                   },
                   onChanged: (value) {
                     context.read<AuthCubit>().validateField('email', value);
@@ -83,8 +85,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   width: double.infinity,
                   child: AppButton(
                     name: state.appState == AppStatus.loading
-                        ? 'please wait..'
-                        : 'Reset Password',
+                        ? locale.please_wait
+                        : locale.reset_password,
                     onPressed: () {
                       context.read<AuthCubit>().resetOldPassword(
                             email: _emailController.text.trim(),

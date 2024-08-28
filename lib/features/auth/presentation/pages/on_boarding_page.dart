@@ -1,4 +1,5 @@
 import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/core/extentions/locale_extention.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:expesne_tracker_app/resources/ui_components/buttons/app_button.dart';
@@ -6,39 +7,39 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 
-class OnboardingPage extends StatefulWidget {
-  static String routeName = '/onboardingPage';
+class OnBoardingPage extends StatefulWidget {
+  static String routeName = '/onBoardingPage';
 
-  const OnboardingPage({super.key});
+  const OnBoardingPage({super.key});
 
   @override
-  State<OnboardingPage> createState() => _OnboardingPageState();
+  State<OnBoardingPage> createState() => _OnBoardingPageState();
 }
 
-class _OnboardingPageState extends State<OnboardingPage> {
+class _OnBoardingPageState extends State<OnBoardingPage> {
   int _currentIndex = 0;
-
-  final List<OnboardingItem> items = [
-    OnboardingItem(
-      imagePath: AssetsProvider.onBoardingOne,
-      title: 'Note Down Expenses',
-      description: 'Daily note your expenses to help manage money',
-    ),
-    OnboardingItem(
-      imagePath: AssetsProvider.onBoardingTwo,
-      title: 'Simple Money Management',
-      description:
-          'Get your notifications or alert when you do the over expenses',
-    ),
-    OnboardingItem(
-      imagePath: AssetsProvider.onBoardingThree,
-      title: 'Easy to Track and Analyze',
-      description: 'Tracking your expense help make sure you don\'t overspend',
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
+
+    final List<OnboardingItem> items = [
+      OnboardingItem(
+        imagePath: AssetsProvider.onBoardingOne,
+        title: locale.note_down_expesnes,
+        description: locale.daily_note_your_expenses,
+      ),
+      OnboardingItem(
+        imagePath: AssetsProvider.onBoardingTwo,
+        title: locale.simple_money_management,
+        description: locale.get_your_notifications,
+      ),
+      OnboardingItem(
+        imagePath: AssetsProvider.onBoardingThree,
+        title: locale.esay_to_track_and_analyze,
+        description: locale.tracking_your_expense,
+      ),
+    ];
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(AppTheme.primaryPadding),
@@ -117,7 +118,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             SizedBox(
               width: double.infinity,
               child: AppButton(
-                name: "Let's Go",
+                name: locale.lets_go,
                 onPressed: () {
                   Navigator.pushNamed(context, SignInPage.routeName);
                 },

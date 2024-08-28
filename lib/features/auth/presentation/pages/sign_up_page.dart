@@ -1,4 +1,5 @@
 import 'package:expesne_tracker_app/core/enums/validity_status.dart';
+import 'package:expesne_tracker_app/core/extentions/locale_extention.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     final state = context.watch<AuthCubit>().state;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final baseColor = isDarkMode ? Colors.white : Colors.black;
@@ -82,12 +84,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           children: [
                             AppTextField(
                               controller: _nameController,
-                              hintText: 'Name',
+                              hintText: locale.name,
                               prefixIcon: AssetsProvider.user,
                               errorText: switch (state.nameValidityStatus) {
                                 ValidityStatus.valid || null => null,
-                                ValidityStatus.empty => 'Required Field',
-                                ValidityStatus.invalid => 'Invalid name'
+                                ValidityStatus.empty => locale.requird_field,
+                                ValidityStatus.invalid => locale.invaild_name,
                               },
                               onChanged: (value) {
                                 context
@@ -98,12 +100,12 @@ class _SignUpPageState extends State<SignUpPage> {
                             const SizedBox(height: 16),
                             AppTextField(
                               controller: _emailController,
-                              hintText: 'Email',
+                              hintText: locale.email,
                               prefixIcon: AssetsProvider.email,
                               errorText: switch (state.emailValidityStatus) {
                                 ValidityStatus.valid || null => null,
-                                ValidityStatus.empty => 'Required Field',
-                                ValidityStatus.invalid => 'Invalid email'
+                                ValidityStatus.empty => locale.requird_field,
+                                ValidityStatus.invalid => locale.email
                               },
                               onChanged: (value) {
                                 context
@@ -114,15 +116,15 @@ class _SignUpPageState extends State<SignUpPage> {
                             const SizedBox(height: 16),
                             AppTextField(
                               controller: _passwordController,
-                              hintText: 'Password',
+                              hintText: locale.password,
                               isObscureText: true,
                               prefixIcon: AssetsProvider.padLock,
                               suffixIconVisible: AssetsProvider.visibility,
                               suffixIconHidden: AssetsProvider.visibilityOff,
                               errorText: switch (state.passwordValidityStatus) {
                                 ValidityStatus.valid || null => null,
-                                ValidityStatus.empty => 'Required Field',
-                                ValidityStatus.invalid => 'Invalid password'
+                                ValidityStatus.empty => locale.requird_field,
+                                ValidityStatus.invalid => locale.invaild_password
                               },
                               onChanged: (value) {
                                 context
@@ -135,8 +137,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               width: double.infinity,
                               child: AppButton(
                                   name: state.appState == AppStatus.loading
-                                      ? 'Please wait..'
-                                      : 'Sign up',
+                                      ? locale.please_wait
+                                      : locale.sign_up,
                                   onPressed: state.appState == AppStatus.loading
                                       ? null
                                       : () {
@@ -180,7 +182,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Or',
+                    locale.or,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: baseColor,
@@ -190,7 +192,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(
                     width: double.infinity,
                     child: AppButton.icon(
-                      name: 'Continue with Google',
+                      name: locale.continue_with_google,
                       iconPath: AssetsProvider.google,
                       enabledBorder: true,
                       onPressed: () {
@@ -202,7 +204,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(
                     width: double.infinity,
                     child: AppButton.icon(
-                      name: 'Continue with Apple',
+                      name: locale.continue_with_apple,
                       iconPath: AssetsProvider.apple,
                       enabledBorder: true,
                       onPressed: () {
@@ -218,11 +220,11 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: baseColor,
                           ),
                       children: [
-                        const TextSpan(
-                          text: 'Already Have an Account? ',
+                        TextSpan(
+                          text: locale.already_have_account,
                         ),
                         TextSpan(
-                          text: 'Sign in here',
+                          text: locale.sign_in_here,
                           style: const TextStyle(
                             color: AppTheme.primaryColor,
                             fontWeight: FontWeight.bold,

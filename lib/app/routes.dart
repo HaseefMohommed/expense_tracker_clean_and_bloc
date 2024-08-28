@@ -18,7 +18,7 @@ abstract class AppRoutes {
     SignUpPage.routeName: (context) => const SignUpPage(),
     ResetPasswordPage.routeName: (context) => const ResetPasswordPage(),
     ResetSucessPage.routeName: (context) => const ResetSucessPage(),
-    OnboardingPage.routeName: (context) => const OnboardingPage(),
+    OnBoardingPage.routeName: (context) => const OnBoardingPage(),
     ProfilePage.routeName: (context) => const ProfilePage(),
     NotificationPage.routeName: (context) => const NotificationPage(),
   };

@@ -80,7 +80,7 @@ class _SignInPageState extends State<SignInPage> {
                         children: [
                           AppTextField(
                             controller: _emailController,
-                            hintText: 'Email',
+                            hintText: locale.email,
                             prefixIcon: AssetsProvider.email,
                             errorText: switch (state.emailValidityStatus) {
                               ValidityStatus.valid || null => null,
@@ -96,7 +96,7 @@ class _SignInPageState extends State<SignInPage> {
                           const SizedBox(height: 16),
                           AppTextField(
                             controller: _passwordController,
-                            hintText: 'Password',
+                            hintText: locale.password,
                             isObscureText: true,
                             prefixIcon: AssetsProvider.padLock,
                             suffixIconVisible: AssetsProvider.visibility,
@@ -117,8 +117,8 @@ class _SignInPageState extends State<SignInPage> {
                             width: double.infinity,
                             child: AppButton(
                               name: state.appState == AppStatus.loading
-                                  ? 'Please Wait..'
-                                  : 'Log in',
+                                  ? locale.please_wait
+                                  : locale.log_in,
                               onPressed: state.appState == AppStatus.loading
                                   ? null
                                   : () {
@@ -156,7 +156,7 @@ class _SignInPageState extends State<SignInPage> {
                 SizedBox(
                   width: double.infinity,
                   child: AppButton.seondary(
-                    name: 'Forgot Password',
+                    name: locale.forgot_password,
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
@@ -167,7 +167,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Or',
+                  locale.or,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: baseColor,
@@ -177,7 +177,7 @@ class _SignInPageState extends State<SignInPage> {
                 SizedBox(
                   width: double.infinity,
                   child: AppButton.icon(
-                    name: 'Continue with Google',
+                    name: locale.continue_with_google,
                     iconPath: AssetsProvider.google,
                     enabledBorder: true,
                     onPressed: () {
@@ -189,7 +189,7 @@ class _SignInPageState extends State<SignInPage> {
                 SizedBox(
                   width: double.infinity,
                   child: AppButton.icon(
-                    name: 'Continue with Apple',
+                    name:locale.continue_with_apple,
                     iconPath: AssetsProvider.apple,
                     enabledBorder: true,
                     onPressed: () {
@@ -205,11 +205,11 @@ class _SignInPageState extends State<SignInPage> {
                           color: baseColor,
                         ),
                     children: [
-                      const TextSpan(
-                        text: "Don't have an account? ",
+                       TextSpan(
+                        text: locale.do_not_have_an_account,
                       ),
                       TextSpan(
-                        text: 'Register here',
+                        text: locale.register_here,
                         style: const TextStyle(
                           color: AppTheme.primaryColor,
                           fontWeight: FontWeight.bold,

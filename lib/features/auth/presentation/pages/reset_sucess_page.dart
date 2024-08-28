@@ -1,4 +1,5 @@
 import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/core/extentions/locale_extention.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:expesne_tracker_app/resources/ui_components/buttons/app_button.dart';
@@ -11,6 +12,7 @@ class ResetSucessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(
@@ -23,16 +25,16 @@ class ResetSucessPage extends StatelessWidget {
             SvgPicture.asset(
               AssetsProvider.resetSuccess,
             ),
-            const Text(
-              'Password updated!',
-              style: TextStyle(
+             Text(
+              locale.password_updated,
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              'Your password has been setup successfully',
+              locale.your_password_has_been_setup_sucessfully,
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 16,
@@ -42,7 +44,7 @@ class ResetSucessPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: AppButton(
-                name: 'Back to log in',
+                name: locale.back_to_log_in,
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
