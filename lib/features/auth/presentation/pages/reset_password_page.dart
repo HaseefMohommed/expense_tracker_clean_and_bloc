@@ -61,8 +61,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 const SizedBox(height: 8),
                 Text(
                   locale.enter_your_email,
-                  style: TextStyle(
-                    color: Colors.grey[600],
+                  style: const TextStyle(
+                    color: AppTheme.secondaryColor,
                     fontSize: 16,
                   ),
                 ),
@@ -122,12 +122,12 @@ class ValueListTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       leading: Icon(
         isValid ? Icons.check_circle : Icons.radio_button_unchecked,
-        color: isValid ? AppTheme.primaryColor : Colors.grey,
+        color: isValid ? AppTheme.primaryColor : AppTheme.secondaryColor,
       ),
       title: Text(
         text,
         style: TextStyle(
-          color: isValid ? AppTheme.primaryColor : Colors.grey,
+          color: isValid ? AppTheme.primaryColor : AppTheme.secondaryColor,
         ),
       ),
     );

@@ -8,40 +8,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
-  static String routeName = '/profilePage';
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state.appState == AppStatus.success) {
-            Navigator.pushNamed(context, SignInPage.routeName);
-          }
-          state.faliure.showError(context, state.appState);
-        },
-        builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.all(
-              AppTheme.primaryPadding,
-            ),
-            child: Center(
-              child: SizedBox(
-                width: double.infinity,
-                child: AppButton(
-                  name: state.appState == AppStatus.loading
-                      ? 'Please wait..'
-                      : 'sign out',
-                  onPressed: () {
-                    context.read<AuthCubit>().signOutUser();
-                  },
-                ),
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state.appState == AppStatus.success) {
+          Navigator.pushNamed(context, SignInPage.routeName);
+        }
+        state.faliure.showError(context, state.appState);
+      },
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(
+            AppTheme.primaryPadding,
+          ),
+          child: Center(
+            child: SizedBox(
+              width: double.infinity,
+              child: AppButton(
+                name: state.appState == AppStatus.loading
+                    ? 'Please wait..'
+                    : 'sign out',
+                onPressed: () {
+                  context.read<AuthCubit>().signOutUser();
+                },
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

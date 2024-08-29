@@ -25,7 +25,7 @@ class ResetSucessPage extends StatelessWidget {
             SvgPicture.asset(
               AssetsProvider.resetSuccess,
             ),
-             Text(
+            Text(
               locale.password_updated,
               style: const TextStyle(
                 fontSize: 24,
@@ -35,8 +35,8 @@ class ResetSucessPage extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               locale.your_password_has_been_setup_sucessfully,
-              style: TextStyle(
-                color: Colors.grey[600],
+              style: const TextStyle(
+                color: AppTheme.secondaryColor,
                 fontSize: 16,
               ),
             ),

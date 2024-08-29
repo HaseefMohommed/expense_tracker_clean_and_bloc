@@ -1,69 +1,52 @@
-import 'package:expesne_tracker_app/features/notification/presentation/pages/notification_page.dart';
-import 'package:expesne_tracker_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
-import 'package:expesne_tracker_app/features/home/presentation/widgets/notification_bell.dart';
+import 'package:expesne_tracker_app/features/home/presentation/widgets/components/notification_bell.dart';
 
 class BottomNavBar extends StatelessWidget {
-  final int currentIndex;
-  final Function(int) onSelected;
+  final ValueNotifier<int> currentIndexNotifier;
 
   const BottomNavBar({
     super.key,
-    required this.currentIndex,
-    required this.onSelected,
+    required this.currentIndexNotifier,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      color: AppTheme.secondaryColor,
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 8,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          NavItem(
-            icon: Icons.home,
-            index: 0,
-            currentIndex: currentIndex,
-            onSelected: onSelected,
-            onPressed: () {},
+    return ValueListenableBuilder<int>(
+      valueListenable: currentIndexNotifier,
+      builder: (context, currentIndex, _) {
+        return BottomAppBar(
+          color: AppTheme.secondaryPaleColor,
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 8,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              NavItem(
+                icon: Icons.home,
+                index: 0,
+                currentIndexNotifier: currentIndexNotifier,
+              ),
+              NavItem(
+                icon: Icons.checklist,
+                index: 1,
+                currentIndexNotifier: currentIndexNotifier,
+              ),
+              const SizedBox(width: 48),
+              NotificationBell(
+                index: 2,
+                currentIndexNotifier: currentIndexNotifier,
+                notificationCount: 2,
+              ),
+              NavItem(
+                icon: Icons.settings,
+                index: 3,
+                currentIndexNotifier: currentIndexNotifier,
+              ),
+            ],
           ),
-          NavItem(
-            icon: Icons.checklist,
-            index: 1,
-            currentIndex: currentIndex,
-            onSelected: onSelected,
-            onPressed: () {},
-          ),
-          const SizedBox(width: 48),
-          NotificationBell(
-            currentIndex: currentIndex,
-            index: 2,
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                NotificationPage.routeName,
-              );
-            },
-            onSelected: onSelected,
-            notificationCount: 2,
-          ),
-          NavItem(
-            icon: Icons.settings,
-            index: 3,
-            currentIndex: currentIndex,
-            onSelected: onSelected,
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                ProfilePage.routeName,
-              );
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -71,32 +54,26 @@ class BottomNavBar extends StatelessWidget {
 class NavItem extends StatelessWidget {
   final IconData icon;
   final int index;
-  final int currentIndex;
-  final Function() onPressed;
-  final Function(int) onSelected;
+
+  final ValueNotifier<int> currentIndexNotifier;
 
   const NavItem({
     super.key,
     required this.icon,
     required this.index,
-    required this.currentIndex,
-    required this.onSelected,
-    required this.onPressed,
+    required this.currentIndexNotifier,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isSelected = currentIndex == index;
+    final isSelected = currentIndexNotifier.value == index;
     return IconButton(
       icon: Icon(
         icon,
         size: 32,
-        color: isSelected ? AppTheme.primaryColor : null,
+        color: isSelected ? AppTheme.primaryColor : AppTheme.secondaryColor,
       ),
-      onPressed: () {
-        onSelected(index);
-        onPressed();
-      },
+      onPressed: () => currentIndexNotifier.value = index,
     );
   }
 }

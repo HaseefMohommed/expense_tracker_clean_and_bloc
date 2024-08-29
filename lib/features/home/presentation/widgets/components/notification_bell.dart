@@ -6,25 +6,22 @@ class NotificationBell extends StatelessWidget {
     super.key,
     this.notificationCount,
     required this.index,
-    required this.currentIndex,
-    required this.onPressed,
-    required this.onSelected,
+    required this.currentIndexNotifier,
   });
 
   final int? notificationCount;
   final int index;
-  final int currentIndex;
-  final Function() onPressed;
-  final Function(int) onSelected;
+
+  final ValueNotifier<int> currentIndexNotifier;
 
   @override
   Widget build(BuildContext context) {
-    final isSelected = currentIndex == index;
+    final isSelected = currentIndexNotifier.value == index;
     final bool badgeVisibility = (notificationCount ?? 0) > 0;
+
     return InkWell(
       onTap: () {
-        onSelected(index);
-        onPressed();
+        currentIndexNotifier.value = index;
       },
       child: Badge(
         backgroundColor: badgeVisibility
@@ -41,7 +38,7 @@ class NotificationBell extends StatelessWidget {
         child: Icon(
           Icons.notifications_outlined,
           size: 32,
-          color: isSelected ? AppTheme.primaryColor : null,
+          color: isSelected ? AppTheme.primaryColor : AppTheme.secondaryColor,
         ),
       ),
     );

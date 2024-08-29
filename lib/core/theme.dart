@@ -14,7 +14,8 @@ class AppTheme {
   // static colors
   // *****************
   static const Color primaryColor = Color(0xFF1D41F9);
-  static const Color secondaryColor = Color(0xFFF5F6F7);
+  static const Color secondaryColor = Color(0xFF9BA1A8);
+  static const Color secondaryPaleColor = Color(0xFFF5F6F7);
   static const Color buttonBorderColor = Color(0xFFDCDFE3);
   static const Color successColor = Color(0xFF5C9F5C);
   static const Color errorColor = Color(0xFFD32F2F);

@@ -99,7 +99,7 @@ class AppButton extends StatelessWidget {
                   : null,
               backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
               foregroundColor:
-                  WidgetStateProperty.all<Color>(AppTheme.secondaryColor),
+                  WidgetStateProperty.all<Color>(AppTheme.secondaryPaleColor),
             ),
             child: Text(
               name,
@@ -115,7 +115,7 @@ class AppButton extends StatelessWidget {
               backgroundColor:
                   WidgetStateProperty.all<Color>(Colors.transparent),
               foregroundColor:
-                  WidgetStateProperty.all<Color>(AppTheme.secondaryColor),
+                  WidgetStateProperty.all<Color>(AppTheme.secondaryPaleColor),
               shape: enabledBorder == true
                   ? WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
