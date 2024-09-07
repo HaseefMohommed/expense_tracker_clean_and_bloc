@@ -1,4 +1,4 @@
-
+import 'package:expesne_tracker_app/features/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -20,7 +20,7 @@ class App extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      initialRoute: OnBoardingPage.routeName,
+      initialRoute: true ? HomePage.routeName : OnBoardingPage.routeName,
       onGenerateRoute: AppRoutes.onGenerateRoute,
     );
   }

@@ -14,7 +14,13 @@ class AssetsProvider {
   static const String errorMark = 'assets/icons/error_mark.svg';
   static const String activeIndicator = 'assets/icons/active_indicator.svg';
   static const String inactiveIndicator = 'assets/icons/inactive_indicator.svg';
+  static const String add = 'assets/icons/add.svg';
+  static const String reminder = 'assets/icons/reminder.svg';
+  static const String wallet = 'assets/icons/wallet.svg';
   static const String food = 'assets/icons/food.svg';
+  static const String salary = 'assets/icons/salary.svg';
+  static const String calender = 'assets/icons/calender.svg';
+  static const String dollerSign = 'assets/icons/doller_sign.svg';
 
   //Images
 

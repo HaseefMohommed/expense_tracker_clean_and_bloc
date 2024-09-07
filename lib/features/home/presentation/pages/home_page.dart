@@ -1,4 +1,7 @@
+import 'package:expesne_tracker_app/features/common/cubit/bottom_nav_cubit.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/add_goal_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/home/presentation/pages/over_view_page.dart';
 import 'package:expesne_tracker_app/features/notification/presentation/pages/notification_page.dart';
@@ -27,53 +30,56 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<int> currentIndex = ValueNotifier<int>(0);
-
-    return ValueListenableBuilder<int>(
-      valueListenable: currentIndex,
-      builder: (context, index, _) {
-        return Scaffold(
-          backgroundColor: AppTheme.secondaryPaleColor,
-          appBar: (currentIndex.value == 0)
-              ? AppBar()
-              : AppBar(
-                  title: Text(
-                    pageTitles[index],
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w800,
+    return BlocProvider(
+      create: (context) => BottomNavCubit(),
+      child: BlocBuilder<BottomNavCubit, int>(
+        builder: (context, currentIndex) {
+          return Scaffold(
+            backgroundColor: AppTheme.secondaryPaleColor,
+            appBar: (currentIndex == 0)
+                ? AppBar()
+                : AppBar(
+                    title: Text(
+                      pageTitles[currentIndex],
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
+                    centerTitle: true,
                   ),
-                  centerTitle: true,
-                ),
-          body: IndexedStack(
-            index: index,
-            children: pageViews,
-          ),
-          bottomNavigationBar: BottomNavBar(
-            currentIndexNotifier: currentIndex,
-          ),
-          floatingActionButton: Container(
-            height: 70,
-            width: 70,
-            decoration: const BoxDecoration(
-              color: AppTheme.primaryColor,
-              shape: BoxShape.circle,
+            body: IndexedStack(
+              index: currentIndex,
+              children: pageViews,
             ),
-            child: FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 35,
+            bottomNavigationBar: const BottomNavBar(),
+            floatingActionButton: Container(
+              height: 70,
+              width: 70,
+              decoration: const BoxDecoration(
+                color: AppTheme.primaryColor,
+                shape: BoxShape.circle,
+              ),
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    AddGoalPage.routeName,
+                  );
+                },
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 35,
+                ),
               ),
             ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-        );
-      },
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+          );
+        },
+      ),
     );
   }
 }

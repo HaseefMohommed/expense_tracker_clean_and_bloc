@@ -36,69 +36,89 @@ class AppTextField extends StatelessWidget {
     return ValueListenableBuilder<bool>(
       valueListenable: _obscureTextNotifier,
       builder: (context, obscureText, child) {
-        return TextFormField(
-          controller: controller,
-          onChanged: onChanged,
-          decoration: InputDecoration(
-            hintText: hintText,
-            border: OutlineInputBorder(
-              borderSide: const BorderSide(
-                width: 1,
-                color: AppTheme.secondaryPaleColor,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (labelText != null)
+              Padding(
+                padding: const EdgeInsets.only(left: 4, bottom: 8),
+                child: Text(
+                  labelText!,
+                  style: TextStyle(
+                    color: isDarkMode
+                        ? AppTheme.secondaryPaleColor
+                        : AppTheme.secondaryColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                width: 1,
-                color: AppTheme.buttonBorderColor,
-              ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                width: 2,
-                color: AppTheme.primaryColor,
-              ),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            prefixIcon: prefixIcon != null
-                ? Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: SvgPicture.asset(
-                      prefixIcon!,
-                      colorFilter: ColorFilter.mode(baseColor, BlendMode.srcIn),
-                    ),
-                  )
-                : null,
-            suffixIcon: isObscureText
-                ? IconButton(
-                    icon: obscureText
-                        ? SvgPicture.asset(
-                            suffixIconHidden ?? '',
-                            colorFilter:
-                                ColorFilter.mode(baseColor, BlendMode.srcIn),
-                          )
-                        : SvgPicture.asset(
-                            suffixIconVisible ?? '',
-                            colorFilter:
-                                ColorFilter.mode(baseColor, BlendMode.srcIn),
-                          ),
-                    onPressed: () {
-                      _obscureTextNotifier.value = !obscureText;
-                    },
-                  )
-                : (suffixIconVisible != null
+            TextFormField(
+              controller: controller,
+              onChanged: onChanged,
+              decoration: InputDecoration(
+                hintText: hintText,
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    width: 1,
+                    color: AppTheme.secondaryPaleColor,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    width: 1,
+                    color: AppTheme.buttonBorderColor,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    width: 2,
+                    color: AppTheme.primaryColor,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                prefixIcon: prefixIcon != null
                     ? Padding(
                         padding: const EdgeInsets.all(12),
-                        child: SvgPicture.asset(suffixIconVisible!),
+                        child: SvgPicture.asset(
+                          prefixIcon!,
+                          colorFilter:
+                              ColorFilter.mode(baseColor, BlendMode.srcIn),
+                        ),
                       )
-                    : null),
-            errorMaxLines: 2,
-            errorText: errorText,
-          ),
-          obscureText: obscureText,
-          validator: validator,
+                    : null,
+                suffixIcon: isObscureText
+                    ? IconButton(
+                        icon: obscureText
+                            ? SvgPicture.asset(
+                                suffixIconHidden ?? '',
+                                colorFilter: ColorFilter.mode(
+                                    baseColor, BlendMode.srcIn),
+                              )
+                            : SvgPicture.asset(
+                                suffixIconVisible ?? '',
+                                colorFilter: ColorFilter.mode(
+                                    baseColor, BlendMode.srcIn),
+                              ),
+                        onPressed: () {
+                          _obscureTextNotifier.value = !obscureText;
+                        },
+                      )
+                    : (suffixIconVisible != null
+                        ? Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: SvgPicture.asset(suffixIconVisible!),
+                          )
+                        : null),
+                errorMaxLines: 2,
+                errorText: errorText,
+              ),
+              obscureText: obscureText,
+              validator: validator,
+            ),
+          ],
         );
       },
     );
