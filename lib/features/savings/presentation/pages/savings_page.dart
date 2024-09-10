@@ -141,15 +141,18 @@ class SavingsPage extends StatelessWidget {
             ),
             child: Column(
               children: [
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Your Goals',
+                    const Text('Your Goals',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         )),
-                    Icon(Icons.more_horiz),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.more_horiz),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -162,4 +165,3 @@ class SavingsPage extends StatelessWidget {
     );
   }
 }
-

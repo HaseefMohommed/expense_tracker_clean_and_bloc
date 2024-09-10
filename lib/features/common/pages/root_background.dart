@@ -3,17 +3,19 @@ import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/resources/ui_components/buttons/app_button.dart';
 
 class RootBackground extends StatelessWidget {
-  final String title;
+  final String pageTitle;
   final bool isEnabledButton;
   final List<Widget> children;
-  final VoidCallback onPressed;
+  final String buttonTitle;
+  final void Function() onPressed;
 
   const RootBackground({
     super.key,
-    required this.title,
+    required this.pageTitle,
     required this.children,
     required this.onPressed,
     this.isEnabledButton = true,
+    required this.buttonTitle,
   });
 
   @override
@@ -22,7 +24,7 @@ class RootBackground extends StatelessWidget {
       backgroundColor: AppTheme.secondaryPaleColor,
       appBar: AppBar(
         title: Text(
-          title,
+          pageTitle,
           style: const TextStyle(
             fontWeight: FontWeight.w600,
           ),
@@ -37,16 +39,17 @@ class RootBackground extends StatelessWidget {
           child: Column(
             children: [
               Expanded(
-                child: ListView(
+                  child: SingleChildScrollView(
+                child: Column(
                   children: children,
                 ),
-              ),
+              )),
               if (isEnabledButton) ...[
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
                   child: AppButton(
-                    name: title,
+                    name: buttonTitle,
                     onPressed: onPressed,
                   ),
                 ),

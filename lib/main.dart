@@ -1,4 +1,5 @@
 import 'package:expesne_tracker_app/features/auth/presentation/bloc/auth_cubit/auth_cubit.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/goal_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expesne_tracker_app/app.dart';
@@ -17,7 +18,10 @@ void main() async {
   await di.init(environment);
   runApp(
     MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => sl<AuthCubit>())],
+      providers: [
+        BlocProvider(create: (context) => sl<AuthCubit>()),
+        BlocProvider(create: (context) => sl<GoalCubit>())
+      ],
       child: const App(),
     ),
   );

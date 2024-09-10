@@ -21,6 +21,9 @@ class AssetsProvider {
   static const String salary = 'assets/icons/salary.svg';
   static const String calender = 'assets/icons/calender.svg';
   static const String dollerSign = 'assets/icons/doller_sign.svg';
+  static const String home = 'assets/icons/home.svg';
+  static const String checkList = 'assets/icons/check_list.svg';
+  static const String gear = 'assets/icons/gear.svg';
 
   //Images
 

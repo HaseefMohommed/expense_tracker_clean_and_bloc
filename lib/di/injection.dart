@@ -11,6 +11,11 @@ import 'package:expesne_tracker_app/features/auth/domain/usecases/sign_in_with_e
 import 'package:expesne_tracker_app/features/auth/domain/usecases/sign_out_user.dart';
 import 'package:expesne_tracker_app/features/auth/domain/usecases/sign_up_with_email_and_password.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/bloc/auth_cubit/auth_cubit.dart';
+import 'package:expesne_tracker_app/features/savings/data/datasources/savings_datasource.dart';
+import 'package:expesne_tracker_app/features/savings/data/repositories/savings_repository_imp.dart';
+import 'package:expesne_tracker_app/features/savings/domain/repositories/savings_repository.dart';
+import 'package:expesne_tracker_app/features/savings/domain/usecases/add_goal.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/goal_cubit.dart';
 import 'package:expesne_tracker_app/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -101,6 +106,35 @@ Future<void> init(Environment environment) async {
       authWithGoogle: sl(),
       resetPassword: sl(),
       signOut: sl(),
+    ),
+  );
+
+  // Savings
+
+  //Data layer
+  sl.registerFactory<SavingsDatasource>(
+    () => SavingsDatasourceImp(
+      firebaseFirestore: sl(),
+    ),
+  );
+
+  //Domain layer
+  sl.registerFactory<SavingsRepository>(
+    () => SavingsRepositoryImp(
+      savingsDatasource: sl(),
+    ),
+  );
+
+  sl.registerFactory(
+    () => AddGoal(
+      savingsRepository: sl(),
+    ),
+  );
+
+  // Bloc
+  sl.registerFactory(
+    () => GoalCubit(
+      addGoal: sl(),
     ),
   );
 }

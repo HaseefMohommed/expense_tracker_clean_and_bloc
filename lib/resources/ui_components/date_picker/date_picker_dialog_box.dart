@@ -6,9 +6,11 @@ import 'package:svg_flutter/svg_flutter.dart';
 
 class DatePickerDialogBox extends StatefulWidget {
   final String title;
+  final ValueChanged<DateTime> onDateSelected;
   const DatePickerDialogBox({
     super.key,
     required this.title,
+    required this.onDateSelected,
   });
 
   @override
@@ -42,6 +44,7 @@ class _DatePickerDialogBoxState extends State<DatePickerDialogBox> {
       setState(() {
         selectedDate = picked;
       });
+      widget.onDateSelected(selectedDate);
     }
   }
 
