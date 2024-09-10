@@ -5,6 +5,7 @@ class GoalState with _$GoalState {
   const factory GoalState({
     @Default(AppStatus.initial) AppStatus appState,
     GoalEntity? goalEntity,
+    List<GoalEntity>? goalsList,
     Failure? faliure,
   }) = _GoalState;
 

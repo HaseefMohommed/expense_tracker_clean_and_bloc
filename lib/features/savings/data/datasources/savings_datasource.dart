@@ -59,10 +59,15 @@ class SavingsDatasourceImp extends SavingsDatasource {
   @override
   Future<List<GoalEntity>> fetchAllGoals() async {
     try {
-      final goalsMap = await firebaseFirestore.collection('goals').get();
-      return goalsMap.docs
-          .map((goal) => GoalModel.fromJson({...goal.data(), 'id': goal.id}))
-          .toList();
+      final QuerySnapshot goalsSnapshot =
+          await firebaseFirestore.collection('goals').get();
+
+      return goalsSnapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        data['id'] = doc.id;
+        return GoalModel.fromJson(data);
+      }).toList();
     } on FirebaseException catch (_) {
       throw ServerFailure();
     } catch (e) {
@@ -70,3 +75,5 @@ class SavingsDatasourceImp extends SavingsDatasource {
     }
   }
 }
+
+class GoalCategoty {}

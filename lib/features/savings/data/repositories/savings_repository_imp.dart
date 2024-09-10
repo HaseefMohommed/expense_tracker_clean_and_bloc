@@ -30,7 +30,7 @@ class SavingsRepositoryImp implements SavingsRepository {
         goalAmount: goalAmount,
       );
       return Right(result);
-    }on FirebaseException catch (_) {
+    } on FirebaseException catch (_) {
       return Left(ServerFailure());
     } catch (e) {
       return Left(UnexpectedFailure());
@@ -38,11 +38,11 @@ class SavingsRepositoryImp implements SavingsRepository {
   }
 
   @override
-  Future<Either<Failure, List<GoalEntity>>> fetchAllGoals() async{
+  Future<Either<Failure, List<GoalEntity>>> fetchAllGoals() async {
     try {
       final result = await savingsDatasource.fetchAllGoals();
       return Right(result);
-    }on FirebaseException catch (_) {
+    } on FirebaseException catch (_) {
       return Left(ServerFailure());
     } catch (e) {
       return Left(UnexpectedFailure());

@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
 
   final List<Widget> pageViews = [
     const OverViewPage(),
-    SavingsPage(),
+    const SavingsPage(),
     const NotificationPage(),
     const ProfilePage(),
   ];

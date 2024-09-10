@@ -15,6 +15,7 @@ import 'package:expesne_tracker_app/features/savings/data/datasources/savings_da
 import 'package:expesne_tracker_app/features/savings/data/repositories/savings_repository_imp.dart';
 import 'package:expesne_tracker_app/features/savings/domain/repositories/savings_repository.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/add_goal.dart';
+import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_all_goals.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/goal_cubit.dart';
 import 'package:expesne_tracker_app/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -131,10 +132,17 @@ Future<void> init(Environment environment) async {
     ),
   );
 
+  sl.registerFactory(
+    () => FetchAllGoals(
+      savingsRepository: sl(),
+    ),
+  );
+
   // Bloc
   sl.registerFactory(
     () => GoalCubit(
       addGoal: sl(),
+      fetchAllGoals: sl(),
     ),
   );
 }
