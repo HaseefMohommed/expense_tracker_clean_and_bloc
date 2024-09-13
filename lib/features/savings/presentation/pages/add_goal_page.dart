@@ -1,4 +1,4 @@
-import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/enums/app_status.dart';
 import 'package:expesne_tracker_app/features/common/pages/root_background.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/goal_cubit.dart';
@@ -76,7 +76,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
               hintText: '1000',
               labelText: 'Amount',
               controller: _goalAmountController,
-              suffixIconVisible: AssetsProvider.dollerSign,
+              suffixIconVisible: AssetsPaths.dollerSign,
             ),
             const SizedBox(height: 16),
             AppDropDown(

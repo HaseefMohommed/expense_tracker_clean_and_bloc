@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expesne_tracker_app/core/exceptions/exceptions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:expesne_tracker_app/features/auth/data/models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
@@ -16,7 +16,7 @@ abstract class AuthRemoteDataSource {
     required String password,
   });
   Future<UserModel> authWithGoogle();
-  Future<UserModel> authWithApple();
+  Future<UserModel> authWithFacebook();
   Future<void> resetPassword({
     required String email,
   });
@@ -27,11 +27,13 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
   final GoogleSignIn googleSignIn;
+  final FacebookAuth facebookAuth;
 
   AuthRemoteDataSourceImp({
     required this.firebaseAuth,
     required this.firebaseFirestore,
     required this.googleSignIn,
+    required this.facebookAuth,
   });
 
   @override
@@ -151,64 +153,59 @@ class AuthRemoteDataSourceImp implements AuthRemoteDataSource {
   }
 
   @override
-  Future<UserModel> authWithApple() async {
-  try {
-    // Get Apple ID credentials
-    final appleCredential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-    );
+  Future<UserModel> authWithFacebook() async {
+    try {
+      final LoginResult result = await facebookAuth.login();
 
-    // Create OAuth credential
-    final oauthCredential = OAuthProvider('apple.com').credential(
-      idToken: appleCredential.identityToken,
-      accessToken: appleCredential.authorizationCode,
-    );
+      if (result.status != LoginStatus.success) {
+        throw FirebaseAuthException(code: 'facebook-login-failed');
+      }
 
-    // Sign in with credential
-    final userCredential = await firebaseAuth.signInWithCredential(oauthCredential);
-    
-    if (userCredential.user == null) {
-      throw FirebaseAuthException(code: 'user-not-found');
-    }
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(result.accessToken!.tokenString);
 
-    // Check if user exists in Firestore
-    final userData = await firebaseFirestore
-        .collection('users')
-        .doc(userCredential.user!.uid)
-        .get();
+      final userCredential =
+          await firebaseAuth.signInWithCredential(facebookAuthCredential);
 
-    if (!userData.exists) {
-      // New user: create account
-      final newUser = UserModel(
-        id: userCredential.user!.uid,
-        name: '${appleCredential.givenName ?? ''} ${appleCredential.familyName ?? ''}'.trim(),
-        email: appleCredential.email ?? userCredential.user!.email ?? '',
-      );
+      if (userCredential.user == null) {
+        throw FirebaseAuthException(code: 'user-not-found');
+      }
 
-      // Save new user to Firestore
-      await firebaseFirestore
+      final userData = await FacebookAuth.instance.getUserData();
+
+      final firestoreUserData = await firebaseFirestore
           .collection('users')
           .doc(userCredential.user!.uid)
-          .set(newUser.toJson());
+          .get();
 
-      return newUser;
-    } else {
-      // Existing user: return user data
-      return UserModel(
-        id: userCredential.user!.uid,
-        name: userData.data()!['name'] ?? '',
-        email: userData.data()!['email'] ?? userCredential.user!.email ?? '',
-      );
+      if (!firestoreUserData.exists) {
+        final newUser = UserModel(
+          id: userCredential.user!.uid,
+          name: userData['name'] ?? '',
+          email: userData['email'] ?? userCredential.user!.email ?? '',
+        );
+
+        await firebaseFirestore
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set(newUser.toJson());
+
+        return newUser;
+      } else {
+        return UserModel(
+          id: userCredential.user!.uid,
+          name: firestoreUserData.data()!['name'] ?? '',
+          email: firestoreUserData.data()!['email'] ??
+              userCredential.user!.email ??
+              '',
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      throw AuthenticationException(code: e.code);
+    } catch (e) {
+      throw AuthenticationException(code: 'unknown');
     }
-  } on FirebaseAuthException catch (e) {
-    throw AuthenticationException(code: e.code);
-  } catch (e) {
-    throw AuthenticationException(code: 'unknown');
   }
-}
 
   @override
   Future<void> resetPassword({

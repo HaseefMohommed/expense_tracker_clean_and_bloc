@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:svg_flutter/svg.dart';
 
-import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/enums/app_status.dart';
 import 'package:expesne_tracker_app/core/extentions/failure_extention.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
@@ -58,13 +58,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgPicture.asset(
-                    AssetsProvider.logo,
+                    AssetsPaths.logo,
                   ),
                   const SizedBox(
                     height: 16,
                   ),
                   SvgPicture.asset(
-                    AssetsProvider.textlogo,
+                    AssetsPaths.textlogo,
                     colorFilter: ColorFilter.mode(baseColor, BlendMode.srcIn),
                   ),
                   const SizedBox(height: 40),
@@ -85,32 +85,22 @@ class _SignUpPageState extends State<SignUpPage> {
                             AppTextField(
                               controller: _nameController,
                               hintText: locale.name,
-                              prefixIcon: AssetsProvider.user,
+                              prefixIcon: AssetsPaths.user,
                               errorText: switch (state.nameValidityStatus) {
                                 ValidityStatus.valid || null => null,
                                 ValidityStatus.empty => locale.requird_field,
                                 ValidityStatus.invalid => locale.invaild_name,
-                              },
-                              onChanged: (value) {
-                                context
-                                    .read<AuthCubit>()
-                                    .validateField('name', value);
                               },
                             ),
                             const SizedBox(height: 16),
                             AppTextField(
                               controller: _emailController,
                               hintText: locale.email,
-                              prefixIcon: AssetsProvider.email,
+                              prefixIcon: AssetsPaths.email,
                               errorText: switch (state.emailValidityStatus) {
                                 ValidityStatus.valid || null => null,
                                 ValidityStatus.empty => locale.requird_field,
                                 ValidityStatus.invalid => locale.email
-                              },
-                              onChanged: (value) {
-                                context
-                                    .read<AuthCubit>()
-                                    .validateField('email', value);
                               },
                             ),
                             const SizedBox(height: 16),
@@ -118,18 +108,14 @@ class _SignUpPageState extends State<SignUpPage> {
                               controller: _passwordController,
                               hintText: locale.password,
                               isObscureText: true,
-                              prefixIcon: AssetsProvider.padLock,
-                              suffixIconVisible: AssetsProvider.visibility,
-                              suffixIconHidden: AssetsProvider.visibilityOff,
+                              prefixIcon: AssetsPaths.padLock,
+                              suffixIconVisible: AssetsPaths.visibility,
+                              suffixIconHidden: AssetsPaths.visibilityOff,
                               errorText: switch (state.passwordValidityStatus) {
                                 ValidityStatus.valid || null => null,
                                 ValidityStatus.empty => locale.requird_field,
-                                ValidityStatus.invalid => locale.invaild_password
-                              },
-                              onChanged: (value) {
-                                context
-                                    .read<AuthCubit>()
-                                    .validateField('password', value);
+                                ValidityStatus.invalid =>
+                                  locale.invaild_password
                               },
                             ),
                             const SizedBox(height: 24),
@@ -144,7 +130,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       : () {
                                           context
                                               .read<AuthCubit>()
-                                              .validateSignUpFields(
+                                              .validateFields(
                                                 name:
                                                     _nameController.text.trim(),
                                                 email: _emailController.text
@@ -193,7 +179,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: double.infinity,
                     child: AppButton.icon(
                       name: locale.continue_with_google,
-                      iconPath: AssetsProvider.google,
+                      iconPath: AssetsPaths.google,
                       enabledBorder: true,
                       onPressed: () {
                         context.read<AuthCubit>().authenticationWithGoogle();
@@ -204,11 +190,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(
                     width: double.infinity,
                     child: AppButton.icon(
-                      name: locale.continue_with_apple,
-                      iconPath: AssetsProvider.apple,
+                      name: locale.continue_with_facebook,
+                      iconPath: AssetsPaths.facebook,
                       enabledBorder: true,
                       onPressed: () {
-                        context.read<AuthCubit>().authenticationWithApple();
+                        context.read<AuthCubit>().authenticationWithFacebook();
                       },
                     ),
                   ),

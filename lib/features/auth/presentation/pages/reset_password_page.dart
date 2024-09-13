@@ -5,7 +5,7 @@ import 'package:expesne_tracker_app/core/extentions/locale_extention.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/bloc/auth_cubit/auth_cubit.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/reset_sucess_page.dart';
 import 'package:flutter/material.dart';
-import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/resources/ui_components/buttons/app_button.dart';
 import 'package:expesne_tracker_app/resources/ui_components/text_field/app_text_field.dart';
@@ -70,14 +70,11 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 AppTextField(
                   controller: _emailController,
                   hintText: locale.email,
-                  prefixIcon: AssetsProvider.email,
+                  prefixIcon: AssetsPaths.email,
                   errorText: switch (state.emailValidityStatus) {
                     ValidityStatus.valid || null => null,
                     ValidityStatus.empty => locale.requird_field,
                     ValidityStatus.invalid => locale.invaild_password
-                  },
-                  onChanged: (value) {
-                    context.read<AuthCubit>().validateField('email', value);
                   },
                 ),
                 const Spacer(),

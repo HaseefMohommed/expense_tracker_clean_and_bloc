@@ -8,7 +8,7 @@ abstract class AuthRemoteRepository {
   Future<Either<Failure, UserEntity>> signUpWithEmailAndPassword(
       {required String name, required String email, required String password});
   Future<Either<Failure, UserEntity>> authWithGoogle();
-  Future<Either<Failure, UserEntity>> authWithApple();
+  Future<Either<Failure, UserEntity>> authWithFacebook();
   Future<Either<Failure, void>> resetOldPassword({required String email});
   Future<Either<Failure, void>> signOutUser();
 }

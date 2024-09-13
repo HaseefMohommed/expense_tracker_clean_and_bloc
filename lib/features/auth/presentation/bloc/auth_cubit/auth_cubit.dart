@@ -2,7 +2,7 @@ import 'package:expesne_tracker_app/core/enums/app_status.dart';
 import 'package:expesne_tracker_app/core/enums/validity_status.dart';
 import 'package:expesne_tracker_app/core/failures/failures.dart';
 import 'package:expesne_tracker_app/features/auth/domain/entities/user_entity.dart';
-import 'package:expesne_tracker_app/features/auth/domain/usecases/auth_with_apple.dart';
+import 'package:expesne_tracker_app/features/auth/domain/usecases/auth_with_facebook.dart';
 import 'package:expesne_tracker_app/features/auth/domain/usecases/auth_with_google.dart';
 import 'package:expesne_tracker_app/features/auth/domain/usecases/reset_password.dart';
 import 'package:expesne_tracker_app/features/auth/domain/usecases/sign_in_with_email_and_password.dart';
@@ -18,7 +18,7 @@ class AuthCubit extends Cubit<AuthState> {
   final SignInWithEmailAndPassword signInWithEmailAndPassword;
   final SignUpWithEmailAndPassword signUpWithEmailAndPassword;
   final AuthWithGoogle authWithGoogle;
-  final AuthWithApple authWithApple;
+  final AuthWithFacebook authWithApple;
   final ResetPassword resetPassword;
   final SignOutUser signOut;
 
@@ -38,48 +38,44 @@ class AuthCubit extends Cubit<AuthState> {
   static final RegExp _passwordRegExp =
       RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
 
-  void validateField(String field, String value) {
-    ValidityStatus status = ValidityStatus.valid;
-    if (value.isEmpty) {
-      status = ValidityStatus.empty;
-    } else {
-      bool isValid = switch (field) {
-        'name' => _nameRegExp.hasMatch(value),
-        'email' => _emailRegExp.hasMatch(value),
-        'password' => _passwordRegExp.hasMatch(value),
-        _ => false,
-      };
-      status = isValid ? ValidityStatus.valid : ValidityStatus.invalid;
+  void validateFields({
+    String? name,
+    required String email,
+    required String? password,
+  }) {
+    Map<String, ValidityStatus> fieldStatuses = {
+      'name': ValidityStatus.valid,
+      'email': ValidityStatus.valid,
+      'password': ValidityStatus.valid,
+    };
+
+    void validateField(String field, String? value) {
+      if (value == null || value.isEmpty) {
+        fieldStatuses[field] = ValidityStatus.empty;
+      } else {
+        bool isValid = switch (field) {
+          'name' => _nameRegExp.hasMatch(value),
+          'email' => _emailRegExp.hasMatch(value),
+          'password' => _passwordRegExp.hasMatch(value),
+          _ => false,
+        };
+        fieldStatuses[field] =
+            isValid ? ValidityStatus.valid : ValidityStatus.invalid;
+      }
     }
 
+    if (password != null) validateField('password', password);
+    if (name != null) validateField('name', name);
+    validateField('email', email);
+
     emit(state.copyWith(
-      nameValidityStatus: field == 'name' ? status : state.nameValidityStatus,
-      emailValidityStatus:
-          field == 'email' ? status : state.emailValidityStatus,
-      passwordValidityStatus:
-          field == 'password' ? status : state.passwordValidityStatus,
+      nameValidityStatus: fieldStatuses['name'],
+      emailValidityStatus: fieldStatuses['email'],
+      passwordValidityStatus: fieldStatuses['password'],
     ));
   }
 
-  void validateLoginFields({
-    required String email,
-    required String password,
-  }) {
-    validateField('email', email);
-    validateField('password', password);
-  }
-
-  void validateSignUpFields({
-    required String name,
-    required String email,
-    required String password,
-  }) {
-    validateField('name', name);
-    validateField('email', email);
-    validateField('password', password);
-  }
-
-   void resetValidityStatus() {
+  void resetValidityStatus() {
     emit(state.copyWith(
       emailValidityStatus: null,
       passwordValidityStatus: null,
@@ -141,7 +137,7 @@ class AuthCubit extends Cubit<AuthState> {
     ));
   }
 
-  Future<void> authenticationWithApple() async {
+  Future<void> authenticationWithFacebook() async {
     emit(state.copyWith(appState: AppStatus.loading));
 
     final result = await authWithApple();
@@ -192,5 +188,4 @@ class AuthCubit extends Cubit<AuthState> {
       ),
     ));
   }
-
 }

@@ -1,5 +1,5 @@
-class AssetsProvider {
-  AssetsProvider._();
+class AssetsPaths {
+  AssetsPaths._();
 
   //  icons
 
@@ -10,6 +10,7 @@ class AssetsProvider {
   static const String visibilityOff = 'assets/icons/visibility_off.svg';
   static const String apple = 'assets/icons/apple.svg';
   static const String google = 'assets/icons/google.svg';
+  static const String facebook = 'assets/icons/facebook.svg';
   static const String backButton = 'assets/icons/back_button.svg';
   static const String errorMark = 'assets/icons/error_mark.svg';
   static const String activeIndicator = 'assets/icons/active_indicator.svg';

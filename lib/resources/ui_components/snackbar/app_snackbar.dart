@@ -1,4 +1,4 @@
-import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg_flutter.dart';
@@ -103,7 +103,7 @@ class SnackBarWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            SvgPicture.asset(AssetsProvider.errorMark),
+            SvgPicture.asset(AssetsPaths.errorMark),
             const SizedBox(width: 12),
             Expanded(
               child: Text(

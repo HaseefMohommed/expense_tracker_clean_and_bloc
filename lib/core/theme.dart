@@ -13,7 +13,7 @@ class AppTheme {
   // *****************
   // static colors
   // *****************
-  static const Color primaryColor = Color(0xFF1D41F9);
+  static const Color primaryColor = Color.fromARGB(255, 49, 68, 166);
   static const Color secondaryColor = Color(0xFF9BA1A8);
   static const Color secondaryPaleColor = Color(0xFFF5F6F7);
   static const Color buttonBorderColor = Color(0xFFDCDFE3);

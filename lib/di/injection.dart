@@ -4,7 +4,7 @@ import 'package:expesne_tracker_app/environment/environment.dart';
 import 'package:expesne_tracker_app/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:expesne_tracker_app/features/auth/data/respositories/auth_remote_repository_imp.dart';
 import 'package:expesne_tracker_app/features/auth/domain/respositories/auth_remote_repository.dart';
-import 'package:expesne_tracker_app/features/auth/domain/usecases/auth_with_apple.dart';
+import 'package:expesne_tracker_app/features/auth/domain/usecases/auth_with_facebook.dart';
 import 'package:expesne_tracker_app/features/auth/domain/usecases/auth_with_google.dart';
 import 'package:expesne_tracker_app/features/auth/domain/usecases/reset_password.dart';
 import 'package:expesne_tracker_app/features/auth/domain/usecases/sign_in_with_email_and_password.dart';
@@ -20,6 +20,7 @@ import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/goa
 import 'package:expesne_tracker_app/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -36,6 +37,8 @@ Future<void> init(Environment environment) async {
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
 
   sl.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
+
+  sl.registerLazySingleton<FacebookAuth>(() => FacebookAuth.instance);
 
   // setting up application environment for global access
   sl.registerFactory<AppConfig>(
@@ -54,6 +57,7 @@ Future<void> init(Environment environment) async {
       googleSignIn: sl(),
       firebaseAuth: sl(),
       firebaseFirestore: sl(),
+      facebookAuth: sl(),
     ),
   );
 
@@ -81,7 +85,7 @@ Future<void> init(Environment environment) async {
     ),
   );
   sl.registerFactory(
-    () => AuthWithApple(
+    () => AuthWithFacebook(
       authRemoteRepository: sl(),
     ),
   );

@@ -1,4 +1,4 @@
-import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/entries_list_tile.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/over_view_card.dart';
@@ -26,42 +26,42 @@ class _OverViewPageState extends State<OverViewPage> {
     const EntriesListTile(
       title: 'Salary',
       description: '1 Mar 2024',
-      iconPath: AssetsProvider.salary,
+      iconPath: AssetsPaths.salary,
       amount: '+\$3,500.00',
       paymentMethod: 'Bank Transfer',
     ),
     const EntriesListTile(
       title: 'Grocery Shopping',
       description: '5 Mar 2024',
-      iconPath: AssetsProvider.salary,
+      iconPath: AssetsPaths.salary,
       amount: '-\$85.50',
       paymentMethod: 'Credit Card',
     ),
     const EntriesListTile(
       title: 'Electricity Bill',
       description: '10 Mar 2024',
-      iconPath: AssetsProvider.salary,
+      iconPath: AssetsPaths.salary,
       amount: '-\$120.75',
       paymentMethod: 'Auto-Pay',
     ),
     const EntriesListTile(
       title: 'Freelance Work',
       description: '15 Mar 2024',
-      iconPath: AssetsProvider.salary,
+      iconPath: AssetsPaths.salary,
       amount: '+\$250.00',
       paymentMethod: 'PayPal',
     ),
     const EntriesListTile(
       title: 'Restaurant Dinner',
       description: '20 Mar 2024',
-      iconPath: AssetsProvider.salary,
+      iconPath: AssetsPaths.salary,
       amount: '-\$65.30',
       paymentMethod: 'Debit Card',
     ),
     const EntriesListTile(
       title: 'Mobile Phone Bill',
       description: '25 Mar 2024',
-      iconPath: AssetsProvider.salary,
+      iconPath: AssetsPaths.salary,
       amount: '-\$45.99',
       paymentMethod: 'Auto-Pay',
     ),
@@ -72,14 +72,14 @@ class _OverViewPageState extends State<OverViewPage> {
     List<AppButton> iconButtons = [
       AppButton.icon(
         name: 'savings',
-        iconPath: AssetsProvider.apple,
+        iconPath: AssetsPaths.apple,
         onPressed: () {
           onPressed(0);
         },
       ),
       AppButton.icon(
         name: 'savings',
-        iconPath: AssetsProvider.apple,
+        iconPath: AssetsPaths.apple,
         onPressed: () {
           onPressed(1);
         },
@@ -98,12 +98,12 @@ class _OverViewPageState extends State<OverViewPage> {
                 OverviewCard(
                   title: 'title',
                   amount: 'amount',
-                  iconPath: AssetsProvider.email,
+                  iconPath: AssetsPaths.email,
                 ),
                 OverviewCard(
                   title: 'title',
                   amount: 'amount',
-                  iconPath: AssetsProvider.email,
+                  iconPath: AssetsPaths.email,
                   backgroundColor: AppTheme.primaryColor,
                   textColor: Colors.white,
                 )
@@ -137,8 +137,8 @@ class _OverViewPageState extends State<OverViewPage> {
                       ),
                       child: SvgPicture.asset(
                         _currentIndex == entry.key
-                            ? AssetsProvider.activeIndicator
-                            : AssetsProvider.inactiveIndicator,
+                            ? AssetsPaths.activeIndicator
+                            : AssetsPaths.inactiveIndicator,
                       ),
                     );
                   }).toList(),

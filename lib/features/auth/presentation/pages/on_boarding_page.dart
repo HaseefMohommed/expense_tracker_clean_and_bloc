@@ -1,4 +1,4 @@
-import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/extentions/locale_extention.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/sign_in_page.dart';
@@ -25,17 +25,17 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
     final List<OnboardingItem> items = [
       OnboardingItem(
-        imagePath: AssetsProvider.onBoardingOne,
+        imagePath: AssetsPaths.onBoardingOne,
         title: locale.note_down_expesnes,
         description: locale.daily_note_your_expenses,
       ),
       OnboardingItem(
-        imagePath: AssetsProvider.onBoardingTwo,
+        imagePath: AssetsPaths.onBoardingTwo,
         title: locale.simple_money_management,
         description: locale.get_your_notifications,
       ),
       OnboardingItem(
-        imagePath: AssetsProvider.onBoardingThree,
+        imagePath: AssetsPaths.onBoardingThree,
         title: locale.esay_to_track_and_analyze,
         description: locale.tracking_your_expense,
       ),
@@ -108,8 +108,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   ),
                   child: SvgPicture.asset(
                     _currentIndex == entry.key
-                        ? AssetsProvider.activeIndicator
-                        : AssetsProvider.inactiveIndicator,
+                        ? AssetsPaths.activeIndicator
+                        : AssetsPaths.inactiveIndicator,
                   ),
                 );
               }).toList(),

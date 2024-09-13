@@ -11,7 +11,7 @@ class AppTextField extends StatelessWidget {
   final String? suffixIconHidden;
   final TextEditingController controller;
   final String? Function(String?)? validator;
-  final void Function(String)? onChanged;
+
   final String? errorText;
   final ValueNotifier<bool> _obscureTextNotifier;
 
@@ -22,7 +22,6 @@ class AppTextField extends StatelessWidget {
     this.isObscureText = false,
     required this.controller,
     this.validator,
-    this.onChanged,
     this.errorText,
     this.prefixIcon,
     this.suffixIconVisible,
@@ -55,7 +54,6 @@ class AppTextField extends StatelessWidget {
               ),
             TextFormField(
               controller: controller,
-              onChanged: onChanged,
               decoration: InputDecoration(
                 hintText: hintText,
                 border: OutlineInputBorder(
@@ -117,6 +115,7 @@ class AppTextField extends StatelessWidget {
               ),
               obscureText: obscureText,
               validator: validator,
+              autovalidateMode: AutovalidateMode.disabled,
             ),
           ],
         );

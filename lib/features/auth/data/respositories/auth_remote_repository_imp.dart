@@ -59,9 +59,9 @@ class AuthRemoteRepositoryImp implements AuthRemoteRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> authWithApple() async {
+  Future<Either<Failure, UserEntity>> authWithFacebook() async {
     try {
-      final result = await authRemoteDataSource.authWithApple();
+      final result = await authRemoteDataSource.authWithFacebook();
       return right(result);
     } on AuthenticationException catch (e) {
       return left(

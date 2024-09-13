@@ -1,4 +1,4 @@
-import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/goal_cubit.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/widgets/goal_list_tile.dart';
@@ -171,7 +171,7 @@ class _SavingsPageState extends State<SavingsPage> {
                       children: state.goalsList!
                           .take(2)
                           .map((goal) => GoalListTile(
-                                icon: AssetsProvider.apple,
+                                icon: AssetsPaths.apple,
                                 title: goal.title,
                                 savedAmount: goal.savedAmount,
                                 goalAmount: goal.goalAmount,

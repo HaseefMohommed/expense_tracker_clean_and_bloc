@@ -1,4 +1,4 @@
-import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/extentions/locale_extention.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/sign_in_page.dart';
@@ -23,7 +23,7 @@ class ResetSucessPage extends StatelessWidget {
           children: [
             const Spacer(),
             SvgPicture.asset(
-              AssetsProvider.resetSuccess,
+              AssetsPaths.resetSuccess,
             ),
             Text(
               locale.password_updated,

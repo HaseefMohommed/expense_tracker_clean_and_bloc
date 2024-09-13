@@ -1,4 +1,4 @@
-import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -11,49 +11,49 @@ class NotificationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> notifications = [
       {
-        'icon': AssetsProvider.food,
+        'icon': AssetsPaths.food,
         'title': 'Food',
         'description': 'You just paid your food bill',
         'time': 'Just now'
       },
       {
-        'icon': AssetsProvider.food,
+        'icon': AssetsPaths.food,
         'title': 'Reminder',
         'description': 'Reminder to pay your rent',
         'time': '23 sec ago'
       },
       {
-        'icon': AssetsProvider.food,
+        'icon': AssetsPaths.food,
         'title': 'Goal Achieved',
         'description': 'You just achieved your goal for new bike',
         'time': '2 min ago'
       },
       {
-        'icon': AssetsProvider.food,
+        'icon': AssetsPaths.food,
         'title': 'Reminder',
         'description': 'You just set a new reminder shopping',
         'time': '10 min ago'
       },
       {
-        'icon': AssetsProvider.food,
+        'icon': AssetsPaths.food,
         'title': 'Food',
         'description': 'You just paid your food bill',
         'time': '45 min ago'
       },
       {
-        'icon': AssetsProvider.food,
+        'icon': AssetsPaths.food,
         'title': 'Bill',
         'description': 'You just got a reminder for your bill pay',
         'time': '1 hour ago'
       },
       {
-        'icon': AssetsProvider.food,
+        'icon': AssetsPaths.food,
         'title': 'Uber',
         'description': 'You just paid your uber bill',
         'time': '2 hour ago'
       },
       {
-        'icon': AssetsProvider.food,
+        'icon': AssetsPaths.food,
         'title': 'Ticket',
         'description': 'You just paid for the movie ticket',
         'time': '5 hour ago'

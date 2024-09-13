@@ -1,4 +1,4 @@
-import 'package:expesne_tracker_app/constants/assets_provider.dart';
+import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -82,7 +82,7 @@ class _DatePickerDialogBoxState extends State<DatePickerDialogBox> {
                   DateFormat('dd/MM/yyyy').format(selectedDate),
                   style: const TextStyle(fontSize: 16),
                 ),
-                SvgPicture.asset(AssetsProvider.calender),
+                SvgPicture.asset(AssetsPaths.calender),
               ],
             ),
           ),

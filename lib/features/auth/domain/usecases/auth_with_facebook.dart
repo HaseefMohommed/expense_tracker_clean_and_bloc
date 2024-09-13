@@ -3,12 +3,12 @@ import 'package:expesne_tracker_app/core/failures/failures.dart';
 import 'package:expesne_tracker_app/features/auth/domain/entities/user_entity.dart';
 import 'package:expesne_tracker_app/features/auth/domain/respositories/auth_remote_repository.dart';
 
-class AuthWithApple {
+class AuthWithFacebook {
   final AuthRemoteRepository authRemoteRepository;
 
-  AuthWithApple({required this.authRemoteRepository});
+  AuthWithFacebook({required this.authRemoteRepository});
 
   Future<Either<Failure, UserEntity>> call() {
-    return authRemoteRepository.authWithApple();
+    return authRemoteRepository.authWithFacebook();
   }
 }
