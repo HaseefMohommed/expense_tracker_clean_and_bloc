@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:expesne_tracker_app/core/enums/auth_type.dart';
+import 'package:expesne_tracker_app/utils/enums/auth_type.dart';
 
 abstract class Failure with FailureMessage, EquatableMixin {}
 

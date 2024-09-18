@@ -1,5 +1,6 @@
 import 'package:expesne_tracker_app/constants/assets_paths.dart';
-import 'package:expesne_tracker_app/core/enums/app_status.dart';
+import 'package:expesne_tracker_app/utils/enums/app_status.dart';
+import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
 import 'package:expesne_tracker_app/features/common/pages/root_background.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/goal_cubit.dart';
 import 'package:expesne_tracker_app/resources/ui_components/app_drop_down/app_drop_down.dart';
@@ -21,7 +22,7 @@ class _AddGoalPageState extends State<AddGoalPage> {
   final _goalTitleController = TextEditingController();
   final _goalAmountController = TextEditingController();
   String? selectedContributionType;
-  String? selectedCategory;
+  GoalCategory? selectedCategory;
   DateTime? selectedDeadline;
 
   void _submitGoal() {
@@ -79,28 +80,20 @@ class _AddGoalPageState extends State<AddGoalPage> {
               suffixIconVisible: AssetsPaths.dollerSign,
             ),
             const SizedBox(height: 16),
-            AppDropDown(
+            AppDropDown<GoalCategory>(
               title: 'Category',
-              items: const [
-                'Emergency Fund',
-                'Debt Repayment',
-                'Retirement Fund',
-                'Major Purchases',
-                'Education Fund',
-              ],
+              items: GoalCategory.values,
+              itemAsString: (GoalCategory category) =>
+                  category.toString().split('.').last,
               onSelect: (option) {
                 selectedCategory = option;
               },
             ),
             const SizedBox(height: 16),
-            AppDropDown(
+            AppDropDown<String>(
               title: 'Contribution Type',
-              items: const [
-                'Yearly',
-                'Monthly',
-                'Weekly',
-                'Daily',
-              ],
+              items: const ['Yearly', 'Monthly', 'Weekly', 'Daily'],
+              itemAsString: (String item) => item,
               onSelect: (option) {
                 selectedContributionType = option;
               },

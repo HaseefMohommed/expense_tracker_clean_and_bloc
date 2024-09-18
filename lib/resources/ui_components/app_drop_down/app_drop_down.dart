@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 
-class AppDropDown extends StatefulWidget {
+class AppDropDown<T> extends StatefulWidget {
   final String title;
-  final List<String> items;
-  final Function(String) onSelect;
+  final List<T> items;
+  final Function(T) onSelect;
+  final String Function(T) itemAsString;
 
   const AppDropDown({
     super.key,
     required this.items,
     required this.onSelect,
     required this.title,
+    required this.itemAsString,
   });
 
   @override
-  State<AppDropDown> createState() => _AppDropDownState();
+  State<AppDropDown<T>> createState() => _AppDropDownState<T>();
 }
 
-class _AppDropDownState extends State<AppDropDown> {
-  late String _selectedItem;
+class _AppDropDownState<T> extends State<AppDropDown<T>> {
+  late T _selectedItem;
 
   @override
   void initState() {
@@ -57,7 +59,7 @@ class _AppDropDownState extends State<AppDropDown> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  _selectedItem,
+                  widget.itemAsString(_selectedItem),
                 ),
                 const Icon(Icons.arrow_drop_down),
               ],
@@ -94,7 +96,7 @@ class _AppDropDownState extends State<AppDropDown> {
                       final isSelected = item == _selectedItem;
                       return ListTile(
                         title: Text(
-                          item,
+                          widget.itemAsString(item),
                           style: isSelected
                               ? const TextStyle(
                                   color: AppTheme.primaryColor,

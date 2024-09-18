@@ -1,5 +1,5 @@
 import 'package:expesne_tracker_app/constants/assets_paths.dart';
-import 'package:expesne_tracker_app/core/extentions/locale_extention.dart';
+import 'package:expesne_tracker_app/utils/extentions/locale_extention.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:expesne_tracker_app/resources/ui_components/buttons/app_button.dart';

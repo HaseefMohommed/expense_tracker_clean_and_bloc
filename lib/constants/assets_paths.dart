@@ -25,6 +25,9 @@ class AssetsPaths {
   static const String home = 'assets/icons/home.svg';
   static const String checkList = 'assets/icons/check_list.svg';
   static const String gear = 'assets/icons/gear.svg';
+  static const String debtRepayment = 'assets/icons/debt_repayment.svg';
+  static const String educationFund = 'assets/icons/education_fund.svg';
+  static const String emergencyFund = 'assets/icons/emergency_fund.svg';
 
   //Images
 

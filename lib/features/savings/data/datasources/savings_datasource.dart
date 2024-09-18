@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
 import 'package:expesne_tracker_app/core/failures/failures.dart';
 import 'package:expesne_tracker_app/features/savings/data/models/goal_model.dart';
 import 'package:expesne_tracker_app/features/savings/domain/entities/goal_entity.dart';
@@ -6,7 +7,7 @@ import 'package:expesne_tracker_app/features/savings/domain/entities/goal_entity
 abstract class SavingsDatasource {
   Future<void> addGoal({
     required String title,
-    required String category,
+    required GoalCategory category,
     required String contributionType,
     required String selectedDate,
     required int savedAmount,
@@ -26,7 +27,7 @@ class SavingsDatasourceImp extends SavingsDatasource {
   @override
   Future<void> addGoal({
     required String title,
-    required String category,
+    required GoalCategory category,
     required String contributionType,
     required String selectedDate,
     required int savedAmount,

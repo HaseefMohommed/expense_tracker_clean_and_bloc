@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:expesne_tracker_app/core/enums/auth_type.dart';
+import 'package:expesne_tracker_app/utils/enums/auth_type.dart';
 import 'package:expesne_tracker_app/core/exceptions/exceptions.dart';
 import 'package:expesne_tracker_app/core/failures/failures.dart';
 import 'package:expesne_tracker_app/features/auth/data/datasources/auth_remote_data_source.dart';

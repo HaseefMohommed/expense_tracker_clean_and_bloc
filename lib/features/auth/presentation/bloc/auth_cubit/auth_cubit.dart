@@ -1,5 +1,5 @@
-import 'package:expesne_tracker_app/core/enums/app_status.dart';
-import 'package:expesne_tracker_app/core/enums/validity_status.dart';
+import 'package:expesne_tracker_app/utils/enums/app_status.dart';
+import 'package:expesne_tracker_app/utils/enums/validity_status.dart';
 import 'package:expesne_tracker_app/core/failures/failures.dart';
 import 'package:expesne_tracker_app/features/auth/domain/entities/user_entity.dart';
 import 'package:expesne_tracker_app/features/auth/domain/usecases/auth_with_facebook.dart';

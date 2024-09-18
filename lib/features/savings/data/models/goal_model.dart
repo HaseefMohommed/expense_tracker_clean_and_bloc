@@ -1,3 +1,5 @@
+import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
+import 'package:expesne_tracker_app/utils/helpers/json_converter.dart';
 import 'package:expesne_tracker_app/features/savings/domain/entities/goal_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,7 +11,7 @@ class GoalModel extends GoalEntity with _$GoalModel {
   const factory GoalModel({
     required String id,
     required String title,
-    required String category,
+    @GoalCategoryConverter() required GoalCategory category,
     required String contributionType,
     required String selectedDate,
     required int savedAmount,

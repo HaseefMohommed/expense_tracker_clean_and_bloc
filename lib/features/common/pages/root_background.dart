@@ -6,7 +6,7 @@ class RootBackground extends StatelessWidget {
   final String pageTitle;
   final bool isEnabledButton;
   final List<Widget> children;
-  final String buttonTitle;
+  final String? buttonTitle;
   final void Function() onPressed;
 
   const RootBackground({
@@ -15,7 +15,7 @@ class RootBackground extends StatelessWidget {
     required this.children,
     required this.onPressed,
     this.isEnabledButton = true,
-    required this.buttonTitle,
+    this.buttonTitle,
   });
 
   @override
@@ -49,7 +49,7 @@ class RootBackground extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: AppButton(
-                    name: buttonTitle,
+                    name: buttonTitle!,
                     onPressed: onPressed,
                   ),
                 ),

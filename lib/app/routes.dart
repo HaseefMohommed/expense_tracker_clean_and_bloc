@@ -1,6 +1,7 @@
 import 'package:expesne_tracker_app/features/auth/presentation/pages/on_boarding_page.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/reset_sucess_page.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/add_goal_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/your_goals_page.dart';
 import 'package:flutter/material.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/reset_password_page.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/sign_in_page.dart';
@@ -19,6 +20,7 @@ abstract class AppRoutes {
     ResetSucessPage.routeName: (context) => const ResetSucessPage(),
     OnBoardingPage.routeName: (context) => const OnBoardingPage(),
     AddGoalPage.routeName: (context) => const AddGoalPage(),
+    YourGoalsPage.routeName: (context) => const YourGoalsPage(),
   };
 
   // Note: Named pages under routes will not trigger onGenerateRoute!

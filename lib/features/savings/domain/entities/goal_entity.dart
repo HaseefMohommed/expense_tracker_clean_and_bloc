@@ -1,7 +1,9 @@
+import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
+
 class GoalEntity {
   final String id;
   final String title;
-  final String category;
+  final GoalCategory category;
   final String contributionType;
   final String selectedDate;
   final int savedAmount;

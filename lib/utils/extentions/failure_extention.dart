@@ -1,4 +1,4 @@
-import 'package:expesne_tracker_app/core/enums/app_status.dart';
+import 'package:expesne_tracker_app/utils/enums/app_status.dart';
 import 'package:expesne_tracker_app/core/failures/failures.dart';
 import 'package:expesne_tracker_app/resources/ui_components/snackbar/app_snackbar.dart';
 import 'package:flutter/material.dart';

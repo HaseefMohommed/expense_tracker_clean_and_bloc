@@ -1,4 +1,5 @@
-import 'package:expesne_tracker_app/core/enums/app_status.dart';
+import 'package:expesne_tracker_app/utils/enums/app_status.dart';
+import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
 import 'package:expesne_tracker_app/core/failures/failures.dart';
 import 'package:expesne_tracker_app/features/savings/domain/entities/goal_entity.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/add_goal.dart';
@@ -12,6 +13,7 @@ part 'goal_cubit.freezed.dart';
 class GoalCubit extends Cubit<GoalState> {
   final AddGoal addGoal;
   final FetchAllGoals fetchAllGoals;
+
   GoalCubit({
     required this.addGoal,
     required this.fetchAllGoals,
@@ -19,7 +21,7 @@ class GoalCubit extends Cubit<GoalState> {
 
   Future<void> addNewGoal({
     required String title,
-    required String category,
+    required GoalCategory category,
     required String contributionType,
     required String selectedDate,
     required int savedAmount,
@@ -39,22 +41,24 @@ class GoalCubit extends Cubit<GoalState> {
     emit(
       result.fold(
         (failure) =>
-            state.copyWith(appState: AppStatus.failure, faliure: failure),
+            state.copyWith(appState: AppStatus.failure, failure: failure),
         (_) => state.copyWith(
           appState: AppStatus.success,
         ),
       ),
     );
+
+    await fetchAllGoals();
   }
 
-  Future<void> fetchgoals() async {
+  Future<void> fetchGoals() async {
     emit(state.copyWith(appState: AppStatus.loading));
     final result = await fetchAllGoals();
 
     emit(
       result.fold(
         (failure) =>
-            state.copyWith(appState: AppStatus.failure, faliure: failure),
+            state.copyWith(appState: AppStatus.failure, failure: failure),
         (goalsList) => state.copyWith(
           appState: AppStatus.success,
           goalsList: goalsList,

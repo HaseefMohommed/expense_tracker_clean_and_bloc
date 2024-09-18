@@ -73,6 +73,7 @@ class NotificationPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final notification = notifications[index];
           return ListTile(
+            contentPadding: EdgeInsets.zero,
             leading: SvgPicture.asset(
               notification['icon'],
             ),

@@ -1,9 +1,11 @@
-import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/goal_cubit.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/your_goals_page.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/widgets/goal_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
+import 'package:intl/intl.dart';
 
 class SavingsPage extends StatefulWidget {
   static String pageTitle = 'Savings';
@@ -16,10 +18,10 @@ class SavingsPage extends StatefulWidget {
 class _SavingsPageState extends State<SavingsPage> {
   @override
   void initState() {
-    Future.microtask(() {
-      context.read<GoalCubit>().fetchgoals();
-    });
     super.initState();
+    Future.microtask(() {
+      context.read<GoalCubit>().fetchGoals();
+    });
   }
 
   @override
@@ -74,14 +76,14 @@ class _SavingsPageState extends State<SavingsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       children: [
-                        Icon(Icons.calendar_today,
+                        const Icon(Icons.calendar_today,
                             size: 18, color: AppTheme.secondaryColor),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Text(
-                          'July 2024',
-                          style: TextStyle(
+                          DateFormat('MMMM yyyy').format(DateTime.now()),
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -151,13 +153,18 @@ class _SavingsPageState extends State<SavingsPage> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            YourGoalsPage.routeName,
+                          );
+                        },
                         icon: const Icon(Icons.more_horiz),
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  if (state.goalsList == null || state.goalsList!.isEmpty)
+                  if (state.goalsList.isEmpty)
                     const Text(
                       'No goals available',
                       style: TextStyle(
@@ -168,10 +175,10 @@ class _SavingsPageState extends State<SavingsPage> {
                     )
                   else
                     Column(
-                      children: state.goalsList!
+                      children: state.goalsList
                           .take(2)
                           .map((goal) => GoalListTile(
-                                icon: AssetsPaths.apple,
+                                icon: goal.category.icon,
                                 title: goal.title,
                                 savedAmount: goal.savedAmount,
                                 goalAmount: goal.goalAmount,
