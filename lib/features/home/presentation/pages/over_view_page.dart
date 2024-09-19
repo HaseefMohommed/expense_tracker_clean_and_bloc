@@ -1,8 +1,9 @@
 import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/expense/add_new_entry_page.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/entries_list_tile.dart';
+import 'package:expesne_tracker_app/features/home/presentation/widgets/components/option_button.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/over_view_card.dart';
-import 'package:expesne_tracker_app/resources/ui_components/buttons/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg.dart';
 
@@ -69,19 +70,33 @@ class _OverViewPageState extends State<OverViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<AppButton> iconButtons = [
-      AppButton.icon(
-        name: 'savings',
-        iconPath: AssetsPaths.apple,
+    List<OptionButton> optionButtons = [
+      OptionButton(
+        title: 'Savings',
+        icon: Icons.add,
+        isSelected: _currentIndex == 0,
         onPressed: () {
           onPressed(0);
+          Navigator.pushNamed(
+            context,
+            AddNewEntryPage.routeName,
+          );
         },
       ),
-      AppButton.icon(
-        name: 'savings',
-        iconPath: AssetsPaths.apple,
+      OptionButton(
+        title: 'Remind',
+        icon: Icons.notifications,
+        isSelected: _currentIndex == 1,
         onPressed: () {
           onPressed(1);
+        },
+      ),
+      OptionButton(
+        title: 'Budget',
+        icon: Icons.account_balance_wallet,
+        isSelected: _currentIndex == 2,
+        onPressed: () {
+          onPressed(2);
         },
       ),
     ];
@@ -122,12 +137,12 @@ class _OverViewPageState extends State<OverViewPage> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: iconButtons,
+                  children: optionButtons,
                 ),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: iconButtons.asMap().entries.map((entry) {
+                  children: optionButtons.asMap().entries.map((entry) {
                     return Container(
                       width: 20,
                       height: 20,

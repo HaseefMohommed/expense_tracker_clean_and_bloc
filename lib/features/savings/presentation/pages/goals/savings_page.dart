@@ -1,6 +1,6 @@
 import 'package:expesne_tracker_app/core/theme.dart';
-import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/goal_cubit.dart';
-import 'package:expesne_tracker_app/features/savings/presentation/pages/your_goals_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/savings_cubit.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/goals/your_goals_page.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/widgets/goal_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +20,7 @@ class _SavingsPageState extends State<SavingsPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      context.read<GoalCubit>().fetchGoals();
+      context.read<SavingsCubit>().fetchGoals();
     });
   }
 
@@ -138,7 +138,7 @@ class _SavingsPageState extends State<SavingsPage> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: BlocBuilder<GoalCubit, GoalState>(
+          child: BlocBuilder<SavingsCubit, SavingsState>(
             builder: (context, state) {
               return Column(
                 children: [

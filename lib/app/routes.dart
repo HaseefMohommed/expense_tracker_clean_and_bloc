@@ -1,7 +1,9 @@
 import 'package:expesne_tracker_app/features/auth/presentation/pages/on_boarding_page.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/reset_sucess_page.dart';
-import 'package:expesne_tracker_app/features/savings/presentation/pages/add_goal_page.dart';
-import 'package:expesne_tracker_app/features/savings/presentation/pages/your_goals_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/expense/add_expense_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/expense/add_new_entry_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/goals/add_goal_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/goals/your_goals_page.dart';
 import 'package:flutter/material.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/reset_password_page.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/sign_in_page.dart';
@@ -21,6 +23,8 @@ abstract class AppRoutes {
     OnBoardingPage.routeName: (context) => const OnBoardingPage(),
     AddGoalPage.routeName: (context) => const AddGoalPage(),
     YourGoalsPage.routeName: (context) => const YourGoalsPage(),
+    AddExpensePage.routeName: (context) => const AddExpensePage(),
+    AddNewEntryPage.routeName: (context) => const AddNewEntryPage(),
   };
 
   // Note: Named pages under routes will not trigger onGenerateRoute!

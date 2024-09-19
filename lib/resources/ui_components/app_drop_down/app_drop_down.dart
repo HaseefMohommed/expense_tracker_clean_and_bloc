@@ -6,6 +6,7 @@ class AppDropDown<T> extends StatefulWidget {
   final List<T> items;
   final Function(T) onSelect;
   final String Function(T) itemAsString;
+  final String? errorText;
 
   const AppDropDown({
     super.key,
@@ -13,6 +14,7 @@ class AppDropDown<T> extends StatefulWidget {
     required this.onSelect,
     required this.title,
     required this.itemAsString,
+    this.errorText,
   });
 
   @override
@@ -20,37 +22,39 @@ class AppDropDown<T> extends StatefulWidget {
 }
 
 class _AppDropDownState<T> extends State<AppDropDown<T>> {
-  late T _selectedItem;
+  late T? _selectedItem;
 
   @override
   void initState() {
     super.initState();
-    _selectedItem = widget.items.first;
+    _selectedItem = widget.items.isNotEmpty ? widget.items.first : null;
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => showSelectDialog(context),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 8),
-            child: Text(
-              widget.title,
-              style: const TextStyle(
-                color: AppTheme.secondaryColor,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 8),
+          child: Text(
+            widget.title,
+            style: const TextStyle(
+              color: AppTheme.secondaryColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          Container(
+        ),
+        GestureDetector(
+          onTap: () => showSelectDialog(context),
+          child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               border: Border.all(
-                color: AppTheme.buttonBorderColor,
+                color: widget.errorText != null
+                    ? AppTheme.errorColor
+                    : AppTheme.buttonBorderColor,
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(16),
@@ -59,14 +63,32 @@ class _AppDropDownState<T> extends State<AppDropDown<T>> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.itemAsString(_selectedItem),
+                  _selectedItem == null
+                      ? 'Select an option'
+                      : widget.itemAsString(_selectedItem as T),
+                  style: TextStyle(
+                    color: _selectedItem == null
+                        ? AppTheme.secondaryColor
+                        : Colors.black,
+                  ),
                 ),
                 const Icon(Icons.arrow_drop_down),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+        if (widget.errorText != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 4, top: 8),
+            child: Text(
+              widget.errorText!,
+              style: const TextStyle(
+                color: AppTheme.errorColor,
+                fontSize: 12,
+              ),
+            ),
+          ),
+      ],
     );
   }
 

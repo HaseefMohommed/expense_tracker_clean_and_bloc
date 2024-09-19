@@ -1,5 +1,5 @@
 import 'package:expesne_tracker_app/core/theme.dart';
-import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/goal_cubit.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/savings_cubit.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/widgets/goal_list_tile.dart';
 import 'package:expesne_tracker_app/utils/enums/app_status.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class _YourGoalsPageState extends State<YourGoalsPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      context.read<GoalCubit>().fetchGoals();
+      context.read<SavingsCubit>().fetchGoals();
     });
   }
 
@@ -43,7 +43,7 @@ class _YourGoalsPageState extends State<YourGoalsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('All Your Goals'),
-            BlocBuilder<GoalCubit, GoalState>(
+            BlocBuilder<SavingsCubit, SavingsState>(
               builder: (context, state) {
                 if (state.appState == AppStatus.loading) {
                   return const Center(child: CircularProgressIndicator());

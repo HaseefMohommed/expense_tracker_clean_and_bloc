@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expesne_tracker_app/features/savings/data/models/expense/expense_model.dart';
+import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
 import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
 import 'package:expesne_tracker_app/core/failures/failures.dart';
-import 'package:expesne_tracker_app/features/savings/data/models/goal_model.dart';
+import 'package:expesne_tracker_app/features/savings/data/models/goal/goal_model.dart';
 import 'package:expesne_tracker_app/features/savings/domain/entities/goal_entity.dart';
+import 'package:expesne_tracker_app/utils/enums/payment_method.dart';
 
 abstract class SavingsDatasource {
   Future<void> addGoal({
@@ -15,6 +18,14 @@ abstract class SavingsDatasource {
   });
 
   Future<List<GoalEntity>> fetchAllGoals();
+
+  Future<void> addExpense({
+    required String title,
+    required String addedDate,
+    required ExpenseCategory expenseCategory,
+    required PaymentMethod paymentMethod,
+    required int amount,
+  });
 }
 
 class SavingsDatasourceImp extends SavingsDatasource {
@@ -75,6 +86,35 @@ class SavingsDatasourceImp extends SavingsDatasource {
       throw ServerFailure();
     }
   }
-}
 
-class GoalCategoty {}
+  @override
+  Future<void> addExpense({
+    required String title,
+    required String addedDate,
+    required ExpenseCategory expenseCategory,
+    required PaymentMethod paymentMethod,
+    required int amount,
+  }) async {
+    try {
+      final newExpenseRef = firebaseFirestore.collection('expenses').doc();
+
+      final expenseModel = ExpenseModel(
+        id: newExpenseRef.id,
+        title: title,
+        addedDate: addedDate,
+        expenseCategory: expenseCategory,
+        paymentMethod: paymentMethod,
+        amount: amount,
+      );
+
+      final expenseJson = expenseModel.toJson();
+      expenseJson['id'] = newExpenseRef.id;
+
+      await newExpenseRef.set(expenseJson);
+    } on FirebaseException catch (_) {
+      throw ServerFailure();
+    } catch (e) {
+      throw ServerFailure();
+    }
+  }
+}

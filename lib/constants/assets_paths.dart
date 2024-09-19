@@ -28,6 +28,8 @@ class AssetsPaths {
   static const String debtRepayment = 'assets/icons/debt_repayment.svg';
   static const String educationFund = 'assets/icons/education_fund.svg';
   static const String emergencyFund = 'assets/icons/emergency_fund.svg';
+  static const String nextArrow = 'assets/icons/next_arrow.svg';
+  static const String previousArrow = 'assets/icons/previous_arrow.svg';
 
   //Images
 

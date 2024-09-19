@@ -9,6 +9,7 @@ class AppTextField extends StatelessWidget {
   final String? prefixIcon;
   final String? suffixIconVisible;
   final String? suffixIconHidden;
+  final bool isenableNumberPad;
   final TextEditingController controller;
   final String? Function(String?)? validator;
 
@@ -26,6 +27,7 @@ class AppTextField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIconVisible,
     this.suffixIconHidden,
+    this.isenableNumberPad = false,
   }) : _obscureTextNotifier = ValueNotifier(isObscureText);
 
   @override
@@ -116,6 +118,8 @@ class AppTextField extends StatelessWidget {
               obscureText: obscureText,
               validator: validator,
               autovalidateMode: AutovalidateMode.disabled,
+              keyboardType:
+                  isenableNumberPad ? TextInputType.number : TextInputType.text,
             ),
           ],
         );

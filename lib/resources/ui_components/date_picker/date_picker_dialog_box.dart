@@ -7,10 +7,13 @@ import 'package:svg_flutter/svg_flutter.dart';
 class DatePickerDialogBox extends StatefulWidget {
   final String title;
   final ValueChanged<DateTime> onDateSelected;
+  final String? errorText;
+
   const DatePickerDialogBox({
     super.key,
     required this.title,
     required this.onDateSelected,
+    this.errorText,
   });
 
   @override
@@ -18,12 +21,12 @@ class DatePickerDialogBox extends StatefulWidget {
 }
 
 class _DatePickerDialogBoxState extends State<DatePickerDialogBox> {
-  DateTime selectedDate = DateTime.now();
+  DateTime? selectedDate;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: selectedDate ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
       builder: (BuildContext context, Widget? child) {
@@ -33,8 +36,7 @@ class _DatePickerDialogBoxState extends State<DatePickerDialogBox> {
             colorScheme: const ColorScheme.light(
               primary: AppTheme.primaryColor,
             ),
-            buttonTheme:
-                const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
           ),
           child: child!,
         );
@@ -44,33 +46,33 @@ class _DatePickerDialogBoxState extends State<DatePickerDialogBox> {
       setState(() {
         selectedDate = picked;
       });
-      widget.onDateSelected(selectedDate);
+      widget.onDateSelected(selectedDate!);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _selectDate(context),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 8),
-            child: Text(
-              widget.title,
-              style: const TextStyle(
-                color: AppTheme.secondaryColor,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 8),
+          child: Text(
+            widget.title,
+            style: const TextStyle(
+              color: AppTheme.secondaryColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          Container(
+        ),
+        GestureDetector(
+          onTap: () => _selectDate(context),
+          child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               border: Border.all(
-                color: AppTheme.buttonBorderColor,
+                color: widget.errorText != null ? Colors.red : AppTheme.buttonBorderColor,
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(16),
@@ -79,15 +81,31 @@ class _DatePickerDialogBoxState extends State<DatePickerDialogBox> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  DateFormat('dd/MM/yyyy').format(selectedDate),
-                  style: const TextStyle(fontSize: 16),
+                  selectedDate != null
+                      ? DateFormat('dd/MM/yyyy').format(selectedDate!)
+                      : 'Select a date',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: selectedDate != null ? Colors.black : Colors.grey,
+                  ),
                 ),
                 SvgPicture.asset(AssetsPaths.calender),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+        if (widget.errorText != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 4, top: 8),
+            child: Text(
+              widget.errorText!,
+              style: const TextStyle(
+                color: AppTheme.errorColor,
+                fontSize: 12,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

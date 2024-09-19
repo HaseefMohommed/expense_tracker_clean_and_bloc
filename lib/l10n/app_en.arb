@@ -31,6 +31,18 @@
     "simple_money_management" : "Simple Money Management",
     "get_your_notifications":"Get your notifications or alert when you do the over expenses",
     "esay_to_track_and_analyze": "Easy to Track and Analyze",
-    "tracking_your_expense": "Tracking your expense help make sure you don't overspend"
+    "tracking_your_expense": "Tracking your expense help make sure you don't overspend",
+    "add_goal":"Add Goal",
+    "new_house":"New House",
+    "goal_title": "Goal title",
+    "amount": "Amount",
+    "thousand": "1000",
+    "category": "Category",
+    "contribution_type":"Contribution Type",
+    "dead_line": "Dead line",
+    "yearly":"Yearly",
+    "monthly" :"Monthly",
+    "weekly":"Weekly"
+
 
 }

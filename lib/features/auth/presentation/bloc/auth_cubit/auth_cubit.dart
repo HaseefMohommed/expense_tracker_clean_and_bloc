@@ -41,7 +41,7 @@ class AuthCubit extends Cubit<AuthState> {
   void validateFields({
     String? name,
     required String email,
-    required String? password,
+    String? password,
   }) {
     Map<String, ValidityStatus> fieldStatuses = {
       'name': ValidityStatus.valid,
