@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expesne_tracker_app/features/savings/data/models/expense/expense_model.dart';
+import 'package:expesne_tracker_app/features/savings/data/models/entry_model/entry_model.dart';
+import 'package:expesne_tracker_app/features/savings/domain/entities/entry_entity.dart';
 import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
 import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
 import 'package:expesne_tracker_app/core/failures/failures.dart';
 import 'package:expesne_tracker_app/features/savings/data/models/goal/goal_model.dart';
 import 'package:expesne_tracker_app/features/savings/domain/entities/goal_entity.dart';
+import 'package:expesne_tracker_app/utils/enums/income_category.dart';
 import 'package:expesne_tracker_app/utils/enums/payment_method.dart';
 
 abstract class SavingsDatasource {
-  Future<void> addGoal({
+  Future<GoalEntity> addGoal({
     required String title,
     required GoalCategory category,
     required String contributionType,
@@ -19,11 +21,12 @@ abstract class SavingsDatasource {
 
   Future<List<GoalEntity>> fetchAllGoals();
 
-  Future<void> addExpense({
+  Future<EntryEntity> addEntry({
     required String title,
     required String addedDate,
-    required ExpenseCategory expenseCategory,
-    required PaymentMethod paymentMethod,
+    IncomeCategory? incomeCategory,
+    ExpenseCategory? expenseCategory,
+    PaymentMethod? paymentMethod,
     required int amount,
   });
 }
@@ -36,7 +39,7 @@ class SavingsDatasourceImp extends SavingsDatasource {
   });
 
   @override
-  Future<void> addGoal({
+  Future<GoalEntity> addGoal({
     required String title,
     required GoalCategory category,
     required String contributionType,
@@ -61,6 +64,16 @@ class SavingsDatasourceImp extends SavingsDatasource {
       goalJson['id'] = newGoalRef.id;
 
       await newGoalRef.set(goalJson);
+
+      return GoalEntity(
+        id: goalModel.id,
+        title: goalModel.title,
+        category: goalModel.category,
+        contributionType: goalModel.contributionType,
+        selectedDate: goalModel.selectedDate,
+        savedAmount: goalModel.savedAmount,
+        goalAmount: goalModel.goalAmount,
+      );
     } on FirebaseException catch (_) {
       throw ServerFailure();
     } catch (e) {
@@ -88,29 +101,41 @@ class SavingsDatasourceImp extends SavingsDatasource {
   }
 
   @override
-  Future<void> addExpense({
+  Future<EntryEntity> addEntry({
     required String title,
     required String addedDate,
-    required ExpenseCategory expenseCategory,
-    required PaymentMethod paymentMethod,
+    IncomeCategory? incomeCategory,
+    ExpenseCategory? expenseCategory,
+    PaymentMethod? paymentMethod,
     required int amount,
   }) async {
     try {
-      final newExpenseRef = firebaseFirestore.collection('expenses').doc();
+      final newEntryRef = firebaseFirestore.collection('entries').doc();
 
-      final expenseModel = ExpenseModel(
-        id: newExpenseRef.id,
+      final entryModel = EntryModel(
+        id: newEntryRef.id,
         title: title,
         addedDate: addedDate,
+        incomeCategory: incomeCategory,
         expenseCategory: expenseCategory,
         paymentMethod: paymentMethod,
         amount: amount,
       );
 
-      final expenseJson = expenseModel.toJson();
-      expenseJson['id'] = newExpenseRef.id;
+      final entryJson = entryModel.toJson();
+      entryJson['id'] = newEntryRef.id;
 
-      await newExpenseRef.set(expenseJson);
+      await newEntryRef.set(entryJson);
+
+      return EntryEntity(
+        id: entryModel.id,
+        title: entryModel.title,
+        addedDate: entryModel.addedDate,
+        incomeCategory: entryModel.incomeCategory,
+        expenseCategory: entryModel.expenseCategory,
+        paymentMethod: entryModel.paymentMethod,
+        amount: entryModel.amount,
+      );
     } on FirebaseException catch (_) {
       throw ServerFailure();
     } catch (e) {

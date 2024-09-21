@@ -6,6 +6,7 @@ import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/sav
 import 'package:expesne_tracker_app/resources/ui_components/app_drop_down/app_drop_down.dart';
 import 'package:expesne_tracker_app/resources/ui_components/date_picker/date_picker_dialog_box.dart';
 import 'package:expesne_tracker_app/resources/ui_components/text_field/app_text_field.dart';
+import 'package:expesne_tracker_app/utils/enums/validity_status.dart';
 import 'package:expesne_tracker_app/utils/extentions/locale_extention.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,25 +27,61 @@ class _AddGoalPageState extends State<AddGoalPage> {
   GoalCategory? selectedCategory;
   DateTime? selectedDeadline;
 
+  void _validateAndSubmit() {
+    final title = _goalTitleController.text.trim();
+    final amountString = _goalAmountController.text.trim();
+    final formattedDate = selectedDeadline != null
+        ? DateFormat('yyyy-MM-dd').format(selectedDeadline!)
+        : '';
+    final selectedGoalCategory = selectedCategory?.name ?? '';
+
+    
+    context.read<SavingsCubit>().validateFields(
+          title: title,
+          amount: amountString,
+          goalCategory: selectedGoalCategory,
+          contributionType: selectedContributionType ?? '',
+          date: formattedDate,
+          isValidDate: selectedDeadline != null,
+        );
+
+    
+    if (context
+        .read<SavingsCubit>()
+        .state
+        .formValidityStatus
+        .values
+        .every((status) => status == ValidityStatus.valid)) {
+      _submitGoal();
+    }
+  }
+
   void _submitGoal() {
     final title = _goalTitleController.text.trim();
-    final amount = int.tryParse(_goalAmountController.text.trim());
-    if (title.isNotEmpty &&
-        amount != null &&
-        selectedCategory != null &&
-        selectedContributionType != null &&
-        selectedDeadline != null) {
-      final formattedDate = DateFormat('MM/dd/yyyy').format(selectedDeadline!);
-      FocusManager.instance.primaryFocus?.unfocus();
-      context.read<SavingsCubit>().addNewGoal(
-            title: title,
-            category: selectedCategory!,
-            contributionType: selectedContributionType!,
-            selectedDate: formattedDate,
-            savedAmount: 0,
-            goalAmount: amount,
-          );
-    }
+    final amount = int.parse(_goalAmountController.text.trim());
+    final formattedDate = DateFormat('yyyy-MM-dd').format(selectedDeadline!);
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    
+    context.read<SavingsCubit>().addNewGoal(
+          title: title,
+          category: selectedCategory!, 
+          contributionType: selectedContributionType!,
+          selectedDate: formattedDate,
+          savedAmount: 0,
+          goalAmount: amount,
+        );
+  }
+
+  void _resetForm() {
+    setState(() {
+      _goalTitleController.clear();
+      _goalAmountController.clear();
+      selectedContributionType = null;
+      selectedCategory = null;
+      selectedDeadline = null;
+    });
+    context.read<SavingsCubit>().resetForm();
   }
 
   @override
@@ -59,56 +96,99 @@ class _AddGoalPageState extends State<AddGoalPage> {
     final locale = context.locale;
     return BlocConsumer<SavingsCubit, SavingsState>(
       listener: (context, state) {
-        if (state.appState == AppStatus.success) Navigator.pop(context);
+        if (state.appState == AppStatus.success) {
+          _resetForm();
+          Navigator.pop(context);
+        }
       },
       builder: (context, state) {
-        return RootBackground(
-          pageTitle: locale.add_goal,
-          buttonTitle: state.appState == AppStatus.loading
-              ? locale.please_wait
-              : locale.add_goal,
-          onPressed: _submitGoal,
-          children: [
-            AppTextField(
-              hintText: locale.new_house,
-              labelText: locale.goal_title,
-              controller: _goalTitleController,
-            ),
-            const SizedBox(height: 16),
-            AppTextField(
-              hintText: locale.thousand,
-              labelText: locale.amount,
-              controller: _goalAmountController,
-              suffixIconVisible: AssetsPaths.dollerSign,
-              isenableNumberPad: true,
-            ),
-            const SizedBox(height: 16),
-            AppDropDown<GoalCategory>(
-              title: locale.category,
-              items: GoalCategory.values,
-              itemAsString: (GoalCategory category) =>
-                  category.toString().split('.').last.toLowerCase(),
-              onSelect: (option) {
-                selectedCategory = option;
-              },
-            ),
-            const SizedBox(height: 16),
-            AppDropDown<String>(
-              title: locale.contribution_type,
-              items: const ['Yearly', 'Monthly', 'Weekly', 'Daily'],
-              itemAsString: (String item) => item,
-              onSelect: (option) {
-                selectedContributionType = option;
-              },
-            ),
-            const SizedBox(height: 16),
-            DatePickerDialogBox(
-              title: locale.dead_line,
-              onDateSelected: (date) {
-                selectedDeadline = date;
-              },
-            ),
-          ],
+        final formValidityStatus = state.formValidityStatus;
+        return AbsorbPointer(
+          absorbing: state.appState == AppStatus.loading,
+          child: RootBackground(
+            pageTitle: locale.add_goal,
+            buttonTitle: state.appState == AppStatus.loading
+                ? locale.please_wait
+                : locale.add_goal,
+            onPressed: _validateAndSubmit,
+            children: [
+              AppTextField(
+                hintText: locale.new_house,
+                labelText: locale.goal_title,
+                controller: _goalTitleController,
+                errorText: switch (formValidityStatus['title']) {
+                  ValidityStatus.valid => null,
+                  ValidityStatus.empty => 'Title is required',
+                  ValidityStatus.invalid => 'Invalid title',
+                  _ => null,
+                },
+              ),
+              const SizedBox(height: 16),
+              AppTextField(
+                hintText: locale.thousand,
+                labelText: locale.amount,
+                controller: _goalAmountController,
+                suffixIconVisible: AssetsPaths.dollerSign,
+                isenableNumberPad: true,
+                errorText: switch (formValidityStatus['amount']) {
+                  ValidityStatus.valid => null,
+                  ValidityStatus.empty => 'Amount is required',
+                  ValidityStatus.invalid => 'Invalid amount',
+                  _ => null,
+                },
+              ),
+              const SizedBox(height: 16),
+              AppDropDown<GoalCategory>(
+                title: locale.category,
+                items: GoalCategory.values,
+                itemAsString: (GoalCategory category) =>
+                    category.toString().split('.').last.toLowerCase(),
+                onSelect: (option) {
+                  setState(() {
+                    selectedCategory = option;
+                  });
+                },
+                errorText: switch (formValidityStatus['goalCategory']) {
+                  ValidityStatus.valid => null,
+                  ValidityStatus.empty => 'Category is required',
+                  ValidityStatus.invalid => 'Invalid category',
+                  _ => null,
+                },
+              ),
+              const SizedBox(height: 16),
+              AppDropDown<String>(
+                title: locale.contribution_type,
+                items: const ['Yearly', 'Monthly', 'Weekly', 'Daily'],
+                itemAsString: (String item) => item,
+                onSelect: (option) {
+                  setState(() {
+                    selectedContributionType = option;
+                  });
+                },
+                errorText: switch (formValidityStatus['contributionType']) {
+                  ValidityStatus.valid => null,
+                  ValidityStatus.empty => 'Contribution type is required',
+                  ValidityStatus.invalid => 'Invalid contribution type',
+                  _ => null,
+                },
+              ),
+              const SizedBox(height: 16),
+              DatePickerDialogBox(
+                title: locale.dead_line,
+                onDateSelected: (date) {
+                  setState(() {
+                    selectedDeadline = date;
+                  });
+                },
+                errorText: switch (formValidityStatus['date']) {
+                  ValidityStatus.valid => null,
+                  ValidityStatus.empty => 'Date is required',
+                  ValidityStatus.invalid => 'Invalid date format',
+                  _ => null,
+                },
+              ),
+            ],
+          ),
         );
       },
     );

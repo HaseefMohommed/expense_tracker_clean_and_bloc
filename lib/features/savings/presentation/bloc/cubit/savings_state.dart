@@ -5,9 +5,10 @@ class SavingsState with _$SavingsState {
   const factory SavingsState({
     @Default(AppStatus.initial) AppStatus appState,
     GoalEntity? goalEntity,
-    ExpenseEntity? expenseEntity,
+    EntryEntity? entryEntity,
     @Default([]) List<GoalEntity> goalsList,
-    @Default([]) List<ExpenseEntity> expensesList,
+    @Default([]) List<EntryEntity> entriesList,
+    @Default({}) Map<String, ValidityStatus> formValidityStatus,
     Failure? failure,
   }) = _SavingsState;
 

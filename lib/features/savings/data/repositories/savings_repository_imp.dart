@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:expesne_tracker_app/features/savings/domain/entities/entry_entity.dart';
 import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
 import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
 import 'package:expesne_tracker_app/core/failures/failures.dart';
 import 'package:expesne_tracker_app/features/savings/data/datasources/savings_datasource.dart';
 import 'package:expesne_tracker_app/features/savings/domain/entities/goal_entity.dart';
 import 'package:expesne_tracker_app/features/savings/domain/repositories/savings_repository.dart';
+import 'package:expesne_tracker_app/utils/enums/income_category.dart';
 import 'package:expesne_tracker_app/utils/enums/payment_method.dart';
 
 class SavingsRepositoryImp implements SavingsRepository {
@@ -15,7 +17,7 @@ class SavingsRepositoryImp implements SavingsRepository {
     required this.savingsDatasource,
   });
   @override
-  Future<Either<Failure, void>> addGoal({
+  Future<Either<Failure, GoalEntity>> addGoal({
     required String title,
     required GoalCategory category,
     required String contributionType,
@@ -53,17 +55,19 @@ class SavingsRepositoryImp implements SavingsRepository {
   }
 
   @override
-  Future<Either<Failure, void>> addExpense({
+  Future<Either<Failure, EntryEntity>> addEntry({
     required String title,
     required String addedDate,
-    required ExpenseCategory expenseCategory,
-    required PaymentMethod paymentMethod,
+    IncomeCategory? incomeCategory,
+    ExpenseCategory? expenseCategory,
+    PaymentMethod? paymentMethod,
     required int amount,
   }) async {
     try {
-      final result = await savingsDatasource.addExpense(
+      final result = await savingsDatasource.addEntry(
         title: title,
         addedDate: addedDate,
+        incomeCategory: incomeCategory,
         expenseCategory: expenseCategory,
         paymentMethod: paymentMethod,
         amount: amount,

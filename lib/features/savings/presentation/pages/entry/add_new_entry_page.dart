@@ -1,8 +1,9 @@
 import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
-import 'package:expesne_tracker_app/features/savings/presentation/pages/expense/add_expense_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_expense_page.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/entries_list_tile.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/option_card.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_income_page.dart';
 import 'package:flutter/material.dart';
 
 class AddNewEntryPage extends StatefulWidget {
@@ -83,7 +84,12 @@ class _AddNewEntryPageState extends State<AddNewEntryPage> {
                 children: [
                   OptionCard(
                     title: 'Add Income',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        AddIncomePage.routeName,
+                      );
+                    },
                   ),
                   OptionCard(
                     title: 'Add Expense',

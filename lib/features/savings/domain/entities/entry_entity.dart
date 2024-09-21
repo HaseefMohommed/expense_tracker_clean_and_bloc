@@ -1,20 +1,23 @@
 import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
+import 'package:expesne_tracker_app/utils/enums/income_category.dart';
 import 'package:expesne_tracker_app/utils/enums/payment_method.dart';
 
-class ExpenseEntity {
+class EntryEntity {
   final String id;
   final String title;
   final String addedDate;
-  final ExpenseCategory expenseCategory;
-  final PaymentMethod paymentMethod;
+  final IncomeCategory? incomeCategory;
+  final ExpenseCategory? expenseCategory;
+  final PaymentMethod? paymentMethod;
   final int amount;
 
-  ExpenseEntity({
+  EntryEntity({
     required this.id,
     required this.title,
     required this.addedDate,
-    required this.expenseCategory,
-    required this.paymentMethod,
+    this.incomeCategory,
+    this.expenseCategory,
+    this.paymentMethod,
     required this.amount,
   });
 }

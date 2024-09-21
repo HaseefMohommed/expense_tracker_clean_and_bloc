@@ -1,7 +1,8 @@
 import 'package:expesne_tracker_app/features/auth/presentation/pages/on_boarding_page.dart';
 import 'package:expesne_tracker_app/features/auth/presentation/pages/reset_sucess_page.dart';
-import 'package:expesne_tracker_app/features/savings/presentation/pages/expense/add_expense_page.dart';
-import 'package:expesne_tracker_app/features/savings/presentation/pages/expense/add_new_entry_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_expense_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_income_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_new_entry_page.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/goals/add_goal_page.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/goals/your_goals_page.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ abstract class AppRoutes {
     AddGoalPage.routeName: (context) => const AddGoalPage(),
     YourGoalsPage.routeName: (context) => const YourGoalsPage(),
     AddExpensePage.routeName: (context) => const AddExpensePage(),
+    AddIncomePage.routeName: (context) => const AddIncomePage(),
     AddNewEntryPage.routeName: (context) => const AddNewEntryPage(),
   };
 

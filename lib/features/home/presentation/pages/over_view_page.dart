@@ -1,6 +1,6 @@
 import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
-import 'package:expesne_tracker_app/features/savings/presentation/pages/expense/add_new_entry_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_new_entry_page.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/entries_list_tile.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/option_button.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/over_view_card.dart';
