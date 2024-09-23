@@ -116,7 +116,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
               const SizedBox(height: 16),
               AppTextField(
                 controller: _incomeTitleController,
-                hintText: 'Family Income',
+                hintText: 'Salary',
                 labelText: 'Income Title',
                 errorText: switch (formValidityStatus['title']) {
                   ValidityStatus.valid => null,

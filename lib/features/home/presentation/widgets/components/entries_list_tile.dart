@@ -1,18 +1,20 @@
+import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:svg_flutter/svg.dart';
+import 'package:svg_flutter/svg_flutter.dart';
 
 class EntriesListTile extends StatelessWidget {
   final String title;
-  final String description;
+  final String date;
   final String iconPath;
   final String amount;
-  final String paymentMethod;
+  final String? paymentMethod;
+
   const EntriesListTile({
     super.key,
     required this.title,
-    required this.description,
+    required this.date,
     required this.amount,
-    required this.paymentMethod,
+    this.paymentMethod,
     required this.iconPath,
   });
 
@@ -24,21 +26,57 @@ class EntriesListTile extends StatelessWidget {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title),
-          const SizedBox(
-            height: 4,
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          Text(description),
+          const SizedBox(height: 4),
+          Text(
+            date,
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppTheme.secondaryColor,
+            ),
+          ),
         ],
       ),
       trailing: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(amount),
-          const SizedBox(
-            height: 4,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                paymentMethod != null ? Icons.remove : Icons.add,
+                size: 16,
+                color: paymentMethod != null
+                    ? AppTheme.errorColor
+                    : AppTheme.successColor,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                '\$$amount',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
-          Text(paymentMethod),
+          if (paymentMethod != null) ...[
+            const SizedBox(height: 4),
+            Text(
+              paymentMethod!,
+              style: const TextStyle(
+                fontSize: 14,
+                color: AppTheme.secondaryColor,
+              ),
+            ),
+          ],
         ],
       ),
     );

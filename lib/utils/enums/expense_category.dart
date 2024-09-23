@@ -12,15 +12,15 @@ extension ExpenseCategoryExtension on ExpenseCategory {
   String get icon {
     switch (this) {
       case ExpenseCategory.housing:
-        return AssetsPaths.salary;
+        return AssetsPaths.housing;
       case ExpenseCategory.foodAndDining:
-        return AssetsPaths.educationFund;
+        return AssetsPaths.food;
       case ExpenseCategory.transportation:
-        return AssetsPaths.salary;
+        return AssetsPaths.transportation;
       case ExpenseCategory.entertainmentAndLeisure:
-        return AssetsPaths.educationFund;
+        return AssetsPaths.entertainment;
       case ExpenseCategory.other:
-        return AssetsPaths.emergencyFund;
+        return AssetsPaths.shopping;
     }
   }
 }

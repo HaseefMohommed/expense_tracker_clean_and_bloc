@@ -18,9 +18,7 @@ class _YourGoalsPageState extends State<YourGoalsPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      context.read<SavingsCubit>().fetchGoals();
-    });
+    Future.microtask(() => context.read<SavingsCubit>().fetchGoals());
   }
 
   @override
@@ -36,41 +34,43 @@ class _YourGoalsPageState extends State<YourGoalsPage> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(
-          AppTheme.primaryPadding,
-        ),
+        padding: const EdgeInsets.all(AppTheme.primaryPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('All Your Goals'),
-            BlocBuilder<SavingsCubit, SavingsState>(
+            const Text(
+              'All Your Goals',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            BlocConsumer<SavingsCubit, SavingsState>(
+              listener: (context, state) {},
               builder: (context, state) {
-                if (state.appState == AppStatus.loading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state.appState == AppStatus.success) {
-                  if (state.goalsList.isEmpty) {
-                    return const Center(
-                      child: Text('No goals yet. Add some goals!'),
-                    );
-                  } else {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: state.goalsList.length,
-                      itemBuilder: (context, index) {
-                        final goal = state.goalsList[index];
-                        return GoalListTile(
-                          icon: goal.category.icon,
-                          title: goal.title,
-                          savedAmount: goal.savedAmount,
-                          goalAmount: goal.goalAmount,
-                        );
-                      },
-                    );
-                  }
-                } else {
-                  return const Center(
-                      child: Text('An error occurred. Please try again.'));
-                }
+                return state.appState == AppStatus.loading
+                    ? const Center(child: CircularProgressIndicator())
+                    : state.appState == AppStatus.success
+                        ? state.goalsList.isEmpty
+                            ? const Center(
+                                child: Text('No goals yet. Add some goals!'))
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: state.goalsList.length,
+                                itemBuilder: (context, index) {
+                                  final goal = state.goalsList[index];
+                                  return GoalListTile(
+                                    icon: goal.category.icon,
+                                    title: goal.title,
+                                    savedAmount: goal.savedAmount,
+                                    goalAmount: goal.goalAmount,
+                                  );
+                                },
+                              )
+                        : const Center(
+                            child:
+                                Text('An error occurred. Please try again.'));
               },
             ),
           ],

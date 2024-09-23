@@ -12,15 +12,15 @@ extension GoalCategoryExtension on GoalCategory {
   String get icon {
     switch (this) {
       case GoalCategory.emergencyFund:
-        return AssetsPaths.emergencyFund;
+        return AssetsPaths.salary;
       case GoalCategory.debtRepayment:
         return AssetsPaths.debtRepayment;
       case GoalCategory.retirementFund:
-        return AssetsPaths.emergencyFund;
+        return AssetsPaths.investment;
       case GoalCategory.educationFund:
-        return AssetsPaths.educationFund;
+        return AssetsPaths.savings;
       case GoalCategory.other:
-        return AssetsPaths.food;
+        return AssetsPaths.shopping;
     }
   }
 }

@@ -79,4 +79,64 @@ class SavingsRepositoryImp implements SavingsRepository {
       return Left(UnexpectedFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<EntryEntity>>> fetchAllentries() async {
+    try {
+      final result = await savingsDatasource.fetchAllentris();
+      return Right(result);
+    } on FirebaseException catch (_) {
+      return Left(ServerFailure());
+    } catch (e) {
+      return Left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> fetchTotalExpense() async {
+    try {
+      final result = await savingsDatasource.fetchTotalExpense();
+      return Right(result);
+    } on FirebaseException catch (_) {
+      return Left(ServerFailure());
+    } catch (e) {
+      return Left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> fetchTotalIncome() async {
+    try {
+      final result = await savingsDatasource.fetchTotalIncome();
+      return Right(result);
+    } on FirebaseException catch (_) {
+      return Left(ServerFailure());
+    } catch (e) {
+      return Left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, int>> fetchSavedAmount() async {
+    try {
+      final result = await savingsDatasource.fetchSavedAmount();
+      return Right(result);
+    } on FirebaseException catch (_) {
+      return Left(ServerFailure());
+    } catch (e) {
+      return Left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, int>>> fetchMonthlyGoalAmount() async {
+    try {
+      final result = await savingsDatasource.fetchMonthlyGoalAmount();
+      return Right(result);
+    } on FirebaseException catch (_) {
+      return Left(ServerFailure());
+    } catch (e) {
+      return Left(UnexpectedFailure());
+    }
+  }
 }

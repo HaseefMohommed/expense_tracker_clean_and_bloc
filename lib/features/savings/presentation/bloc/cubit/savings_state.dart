@@ -9,6 +9,10 @@ class SavingsState with _$SavingsState {
     @Default([]) List<GoalEntity> goalsList,
     @Default([]) List<EntryEntity> entriesList,
     @Default({}) Map<String, ValidityStatus> formValidityStatus,
+    @Default(0) int totalIncome,
+    @Default(0) int totalExpense,
+    @Default(0) int savedAmount,
+    @Default({}) Map<String, int> monthlyGoalAmount,
     Failure? failure,
   }) = _SavingsState;
 

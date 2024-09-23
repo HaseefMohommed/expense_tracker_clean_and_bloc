@@ -14,13 +14,13 @@ extension IncomeCategoryExtension on IncomeCategory {
       case IncomeCategory.salary:
         return AssetsPaths.salary;
       case IncomeCategory.investments:
-        return AssetsPaths.educationFund;
+        return AssetsPaths.investment;
       case IncomeCategory.sideHustles:
-        return AssetsPaths.emergencyFund;
+        return AssetsPaths.savings;
       case IncomeCategory.giftsAndGrants:
-        return AssetsPaths.salary;
+        return AssetsPaths.debtRepayment;
       case IncomeCategory.other:
-        return AssetsPaths.salary;
+        return AssetsPaths.shopping;
     }
   }
 }

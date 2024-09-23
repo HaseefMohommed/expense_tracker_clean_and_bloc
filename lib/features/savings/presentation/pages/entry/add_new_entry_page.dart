@@ -1,10 +1,15 @@
 import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/savings_cubit.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_expense_page.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/entries_list_tile.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/option_card.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_income_page.dart';
+import 'package:expesne_tracker_app/utils/enums/app_status.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
+import 'package:expesne_tracker_app/utils/enums/income_category.dart';
 
 class AddNewEntryPage extends StatefulWidget {
   static String routeName = '/addNewEntryPage';
@@ -15,97 +20,48 @@ class AddNewEntryPage extends StatefulWidget {
 }
 
 class _AddNewEntryPageState extends State<AddNewEntryPage> {
-  List<EntriesListTile> entries = [
-    const EntriesListTile(
-      title: 'Salary',
-      description: '1 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '+\$3,500.00',
-      paymentMethod: 'Bank Transfer',
-    ),
-    const EntriesListTile(
-      title: 'Grocery Shopping',
-      description: '5 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '-\$85.50',
-      paymentMethod: 'Credit Card',
-    ),
-    const EntriesListTile(
-      title: 'Electricity Bill',
-      description: '10 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '-\$120.75',
-      paymentMethod: 'Auto-Pay',
-    ),
-    const EntriesListTile(
-      title: 'Freelance Work',
-      description: '15 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '+\$250.00',
-      paymentMethod: 'PayPal',
-    ),
-    const EntriesListTile(
-      title: 'Restaurant Dinner',
-      description: '20 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '-\$65.30',
-      paymentMethod: 'Debit Card',
-    ),
-    const EntriesListTile(
-      title: 'Mobile Phone Bill',
-      description: '25 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '-\$45.99',
-      paymentMethod: 'Auto-Pay',
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => context.read<SavingsCubit>().fetchentries());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.secondaryPaleColor,
       appBar: AppBar(
-        title: const Text(
-          'Add',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        title: const Text('Add', style: TextStyle(fontWeight: FontWeight.w600)),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(
-                AppTheme.primaryPadding,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  OptionCard(
-                    title: 'Add Income',
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        AddIncomePage.routeName,
-                      );
-                    },
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(AppTheme.primaryPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                OptionCard(
+                  title: 'Add Income',
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    AddIncomePage.routeName,
                   ),
-                  OptionCard(
-                    title: 'Add Expense',
-                    backgroundColor: AppTheme.primaryColor,
-                    textColor: Colors.white,
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        AddExpensePage.routeName,
-                      );
-                    },
-                  )
-                ],
-              ),
+                ),
+                OptionCard(
+                  title: 'Add Expense',
+                  backgroundColor: AppTheme.primaryColor,
+                  textColor: Colors.white,
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    AddExpensePage.routeName,
+                  ),
+                )
+              ],
             ),
-            Container(
+          ),
+          Expanded(
+            child: Container(
               width: double.infinity,
               padding: const EdgeInsets.all(AppTheme.primaryPadding),
               decoration: BoxDecoration(
@@ -127,12 +83,45 @@ class _AddNewEntryPageState extends State<AddNewEntryPage> {
                       Icon(Icons.more_horiz),
                     ],
                   ),
-                  ...entries
+                  const SizedBox(height: 12),
+                  Expanded(
+                    child: BlocBuilder<SavingsCubit, SavingsState>(
+                      builder: (context, state) => state.appState ==
+                              AppStatus.loading
+                          ? const Center(child: CircularProgressIndicator())
+                          : state.appState == AppStatus.success
+                              ? state.entriesList.isEmpty
+                                  ? const Center(
+                                      child: Text(
+                                          'No entries yet. Add some entries!'))
+                                  : ListView.builder(
+                                      itemCount: state.entriesList.length,
+                                      itemBuilder: (context, index) {
+                                        final entry = state.entriesList[index];
+                                        return EntriesListTile(
+                                          title: entry.title,
+                                          date: entry.addedDate,
+                                          amount: entry.amount.toString(),
+                                          paymentMethod:
+                                              entry.paymentMethod?.name,
+                                          iconPath: entry.paymentMethod != null
+                                              ? entry.expenseCategory?.icon ??
+                                                  AssetsPaths.shopping
+                                              : entry.incomeCategory?.icon ??
+                                                  AssetsPaths.shopping,
+                                        );
+                                      },
+                                    )
+                              : const Center(
+                                  child: Text(
+                                      'An error occurred. Please try again.')),
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

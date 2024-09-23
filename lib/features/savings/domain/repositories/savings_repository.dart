@@ -27,4 +27,10 @@ abstract class SavingsRepository {
     PaymentMethod? paymentMethod,
     required int amount,
   });
+
+  Future<Either<Failure, List<EntryEntity>>> fetchAllentries();
+  Future<Either<Failure, int>> fetchTotalIncome();
+  Future<Either<Failure, int>> fetchTotalExpense();
+  Future<Either<Failure, int>> fetchSavedAmount();
+  Future<Either<Failure, Map<String, int>>> fetchMonthlyGoalAmount();
 }

@@ -1,5 +1,10 @@
 import 'package:expesne_tracker_app/features/savings/domain/entities/entry_entity.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/add_entry.dart';
+import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_all_entries.dart';
+import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_monthly_amount.dart';
+import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_saved_amount.dart';
+import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_total_expense.dart';
+import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_total_income.dart';
 import 'package:expesne_tracker_app/utils/enums/app_status.dart';
 import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
 import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
@@ -20,11 +25,20 @@ class SavingsCubit extends Cubit<SavingsState> {
   final AddGoal addGoal;
   final AddEntry addEntry;
   final FetchAllGoals fetchAllGoals;
-
+  final FetchAllEntries fetchAllEntries;
+  final FetchTotalIncome fetchTotalIncome;
+  final FetchTotalExpense fetchTotalExpense;
+  final FetchSavedAmount fetchSavedAmount;
+  final FetchMonthlyGoalAmount fetchMonthlyGoalAmount;
   SavingsCubit({
     required this.addGoal,
     required this.addEntry,
     required this.fetchAllGoals,
+    required this.fetchAllEntries,
+    required this.fetchTotalIncome,
+    required this.fetchTotalExpense,
+    required this.fetchSavedAmount,
+    required this.fetchMonthlyGoalAmount,
   }) : super(const SavingsState());
 
   void validateFields({
@@ -184,6 +198,81 @@ class SavingsCubit extends Cubit<SavingsState> {
         appState: AppStatus.success,
         entryEntity: newEntry,
         entriesList: [...state.entriesList, newEntry],
+      )),
+    );
+  }
+
+  Future<void> fetchentries() async {
+    emit(state.copyWith(appState: AppStatus.loading));
+    final result = await fetchAllEntries();
+
+    result.fold(
+      (failure) => emit(state.copyWith(
+        appState: AppStatus.failure,
+        failure: failure,
+      )),
+      (entriesList) => emit(state.copyWith(
+        appState: AppStatus.success,
+        entriesList: entriesList,
+      )),
+    );
+  }
+
+  Future<void> fetchEntryTotals() async {
+    emit(state.copyWith(appState: AppStatus.loading));
+
+    final totalIncomeResult = await fetchTotalIncome();
+    final totalExpenseResult = await fetchTotalExpense();
+
+    final entryTotals = totalIncomeResult.fold(
+      (incomeFailure) => state.copyWith(
+        appState: AppStatus.failure,
+        failure: incomeFailure,
+      ),
+      (totalIncome) => totalExpenseResult.fold(
+        (expenseFailure) => state.copyWith(
+          appState: AppStatus.failure,
+          failure: expenseFailure,
+        ),
+        (totalExpense) => state.copyWith(
+          appState: AppStatus.success,
+          totalIncome: totalIncome,
+          totalExpense: totalExpense,
+        ),
+      ),
+    );
+
+    emit(entryTotals);
+  }
+
+  Future<void> fetchGoalSavedAmount() async {
+    emit(state.copyWith(appState: AppStatus.loading));
+    final result = await fetchSavedAmount();
+
+    result.fold(
+      (failure) => emit(state.copyWith(
+        appState: AppStatus.failure,
+        failure: failure,
+      )),
+      (savedAmount) => emit(state.copyWith(
+        appState: AppStatus.success,
+        savedAmount: savedAmount,
+      )),
+    );
+  }
+
+  Future<void> fetchMonthlyAmount() async {
+    emit(state.copyWith(appState: AppStatus.loading));
+    final result = await fetchMonthlyGoalAmount();
+
+    result.fold(
+      (failure) => emit(state.copyWith(
+        appState: AppStatus.failure,
+        failure: failure,
+      )),
+      (monthlyGoalAmount) => emit(state.copyWith(
+        appState: AppStatus.success,
+        monthlyGoalAmount: monthlyGoalAmount,
       )),
     );
   }

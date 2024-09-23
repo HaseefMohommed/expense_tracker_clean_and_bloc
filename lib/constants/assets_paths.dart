@@ -26,10 +26,14 @@ class AssetsPaths {
   static const String checkList = 'assets/icons/check_list.svg';
   static const String gear = 'assets/icons/gear.svg';
   static const String debtRepayment = 'assets/icons/debt_repayment.svg';
-  static const String educationFund = 'assets/icons/education_fund.svg';
-  static const String emergencyFund = 'assets/icons/emergency_fund.svg';
+  static const String savings = 'assets/icons/savings.svg';
+  static const String investment = 'assets/icons/investment.svg';
   static const String nextArrow = 'assets/icons/next_arrow.svg';
   static const String previousArrow = 'assets/icons/previous_arrow.svg';
+  static const String housing = 'assets/icons/housing.svg';
+  static const String transportation = 'assets/icons/transportation.svg';
+  static const String entertainment = 'assets/icons/entertainment.svg';
+   static const String shopping = 'assets/icons/shopping.svg';
 
   //Images
 

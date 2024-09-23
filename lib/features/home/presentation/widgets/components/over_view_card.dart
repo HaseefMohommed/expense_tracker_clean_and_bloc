@@ -1,10 +1,11 @@
+import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg.dart';
 
 class OverviewCard extends StatelessWidget {
   final String title;
   final String amount;
-  final String iconPath;
+
   final Color backgroundColor;
   final Color textColor;
 
@@ -12,7 +13,6 @@ class OverviewCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.amount,
-    required this.iconPath,
     this.backgroundColor = Colors.white,
     this.textColor = Colors.black,
   });
@@ -27,7 +27,7 @@ class OverviewCard extends StatelessWidget {
       color: backgroundColor,
       child: SizedBox(
         width: 170,
-        height: 160,
+        height: 130,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -37,7 +37,9 @@ class OverviewCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SvgPicture.asset(iconPath),
+                  SvgPicture.asset(
+                    AssetsPaths.wallet,
+                  ),
                   const SizedBox(
                     height: 4,
                   ),

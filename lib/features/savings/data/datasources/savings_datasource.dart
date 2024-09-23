@@ -29,6 +29,12 @@ abstract class SavingsDatasource {
     PaymentMethod? paymentMethod,
     required int amount,
   });
+
+  Future<List<EntryEntity>> fetchAllentris();
+  Future<int> fetchTotalIncome();
+  Future<int> fetchTotalExpense();
+  Future<int> fetchSavedAmount();
+  Future<Map<String, int>> fetchMonthlyGoalAmount();
 }
 
 class SavingsDatasourceImp extends SavingsDatasource {
@@ -136,6 +142,115 @@ class SavingsDatasourceImp extends SavingsDatasource {
         paymentMethod: entryModel.paymentMethod,
         amount: entryModel.amount,
       );
+    } on FirebaseException catch (_) {
+      throw ServerFailure();
+    } catch (e) {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<List<EntryEntity>> fetchAllentris() async {
+    try {
+      final QuerySnapshot entriesSnapshot =
+          await firebaseFirestore.collection('entries').get();
+
+      return entriesSnapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+
+        data['id'] = doc.id;
+        return EntryModel.fromJson(data);
+      }).toList();
+    } on FirebaseException catch (_) {
+      throw ServerFailure();
+    } catch (e) {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<int> fetchTotalIncome() async {
+    try {
+      final QuerySnapshot incomeSnapshot = await firebaseFirestore
+          .collection('entries')
+          .where('expenseCategory', isNull: true)
+          .get();
+
+      int totalIncome = 0;
+      for (var doc in incomeSnapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        totalIncome += (data['amount'] as num).toInt();
+      }
+
+      return totalIncome;
+    } on FirebaseException catch (_) {
+      throw ServerFailure();
+    } catch (e) {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<int> fetchTotalExpense() async {
+    try {
+      final QuerySnapshot expenseSnapshot = await firebaseFirestore
+          .collection('entries')
+          .where('expenseCategory', isNull: false)
+          .get();
+
+      int totalExpense = 0;
+      for (var doc in expenseSnapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        totalExpense += (data['amount'] as num).toInt();
+      }
+
+      return totalExpense;
+    } on FirebaseException catch (_) {
+      throw ServerFailure();
+    } catch (e) {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<int> fetchSavedAmount() async {
+    try {
+      final goals = await fetchAllGoals();
+      return goals.fold<int>(
+          0, (accumulator, goal) => accumulator + goal.savedAmount);
+    } catch (e) {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<Map<String, int>> fetchMonthlyGoalAmount() async {
+    try {
+      final DateTime now = DateTime.now();
+      final String startOfMonth =
+          '${now.year}-${now.month.toString().padLeft(2, '0')}-01';
+      final String endOfMonth =
+          '${now.year}-${now.month.toString().padLeft(2, '0')}-${DateTime(now.year, now.month + 1, 0).day.toString().padLeft(2, '0')}';
+
+      final QuerySnapshot goalsSnapshot = await firebaseFirestore
+          .collection('goals')
+          .where('selectedDate', isGreaterThanOrEqualTo: startOfMonth)
+          .where('selectedDate', isLessThanOrEqualTo: endOfMonth)
+          .get();
+
+      int monthlyGoalAmount = 0;
+      int monthlySavedAmount = 0;
+
+      for (var doc in goalsSnapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        monthlyGoalAmount += (data['goalAmount'] as num).toInt();
+        monthlySavedAmount += (data['savedAmount'] as num).toInt();
+      }
+
+      return {
+        'GoalAmount': monthlyGoalAmount,
+        'SavedAmount': monthlySavedAmount,
+      };
     } on FirebaseException catch (_) {
       throw ServerFailure();
     } catch (e) {

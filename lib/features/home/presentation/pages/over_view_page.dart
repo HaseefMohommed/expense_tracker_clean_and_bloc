@@ -1,11 +1,17 @@
 import 'package:expesne_tracker_app/constants/assets_paths.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/savings_cubit.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_new_entry_page.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/entries_list_tile.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/option_button.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/over_view_card.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/entries_page.dart';
+import 'package:expesne_tracker_app/utils/enums/app_status.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:svg_flutter/svg.dart';
+import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
+import 'package:expesne_tracker_app/utils/enums/income_category.dart';
 
 class OverViewPage extends StatefulWidget {
   const OverViewPage({super.key});
@@ -17,56 +23,20 @@ class OverViewPage extends StatefulWidget {
 class _OverViewPageState extends State<OverViewPage> {
   int _currentIndex = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      context.read<SavingsCubit>().fetchentries();
+      context.read<SavingsCubit>().fetchEntryTotals();
+    });
+  }
+
   void onPressed(int index) {
     setState(() {
       _currentIndex = index;
     });
   }
-
-  List<EntriesListTile> entries = [
-    const EntriesListTile(
-      title: 'Salary',
-      description: '1 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '+\$3,500.00',
-      paymentMethod: 'Bank Transfer',
-    ),
-    const EntriesListTile(
-      title: 'Grocery Shopping',
-      description: '5 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '-\$85.50',
-      paymentMethod: 'Credit Card',
-    ),
-    const EntriesListTile(
-      title: 'Electricity Bill',
-      description: '10 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '-\$120.75',
-      paymentMethod: 'Auto-Pay',
-    ),
-    const EntriesListTile(
-      title: 'Freelance Work',
-      description: '15 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '+\$250.00',
-      paymentMethod: 'PayPal',
-    ),
-    const EntriesListTile(
-      title: 'Restaurant Dinner',
-      description: '20 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '-\$65.30',
-      paymentMethod: 'Debit Card',
-    ),
-    const EntriesListTile(
-      title: 'Mobile Phone Bill',
-      description: '25 Mar 2024',
-      iconPath: AssetsPaths.salary,
-      amount: '-\$45.99',
-      paymentMethod: 'Auto-Pay',
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -101,32 +71,35 @@ class _OverViewPageState extends State<OverViewPage> {
       ),
     ];
 
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(AppTheme.primaryPadding),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OverviewCard(
-                  title: 'title',
-                  amount: 'amount',
-                  iconPath: AssetsPaths.email,
-                ),
-                OverviewCard(
-                  title: 'title',
-                  amount: 'amount',
-                  iconPath: AssetsPaths.email,
-                  backgroundColor: AppTheme.primaryColor,
-                  textColor: Colors.white,
-                )
-              ],
-            ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(
+            AppTheme.primaryPadding,
           ),
-          const SizedBox(height: 8),
-          Container(
+          child: BlocBuilder<SavingsCubit, SavingsState>(
+            builder: (context, state) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  OverviewCard(
+                    title: 'Total Income',
+                    amount: '${state.totalIncome}',
+                  ),
+                  OverviewCard(
+                    title: 'Total Expense',
+                    amount: '${state.totalExpense}',
+                    backgroundColor: AppTheme.primaryColor,
+                    textColor: Colors.white,
+                  )
+                ],
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+        Flexible(
+          child: Container(
             width: double.infinity,
             padding: const EdgeInsets.all(AppTheme.primaryPadding),
             decoration: BoxDecoration(
@@ -158,23 +131,71 @@ class _OverViewPageState extends State<OverViewPage> {
                     );
                   }).toList(),
                 ),
-                const Row(
+                const SizedBox(height: 12),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Latest Entries',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    Icon(Icons.more_horiz),
+                    const Text(
+                      'Latest Entries',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          EntriesPage.routeName,
+                        );
+                      },
+                      icon: const Icon(Icons.more_horiz),
+                    ),
                   ],
                 ),
-                ...entries
+                const SizedBox(height: 8),
+                Expanded(
+                  child: BlocBuilder<SavingsCubit, SavingsState>(
+                    builder: (context, state) => state.appState ==
+                            AppStatus.loading
+                        ? const Center(child: CircularProgressIndicator())
+                        : state.appState == AppStatus.success
+                            ? state.entriesList.isEmpty
+                                ? const Center(
+                                    child: Text(
+                                      'No entries yet. Add some entries!',
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    itemCount: state.entriesList.length,
+                                    itemBuilder: (context, index) {
+                                      final entry = state.entriesList[index];
+                                      return EntriesListTile(
+                                        title: entry.title,
+                                        date: entry.addedDate,
+                                        amount: entry.amount.toString(),
+                                        paymentMethod:
+                                            entry.paymentMethod?.name,
+                                        iconPath: entry.paymentMethod != null
+                                            ? entry.expenseCategory?.icon ??
+                                                AssetsPaths.shopping
+                                            : entry.incomeCategory?.icon ??
+                                                AssetsPaths.shopping,
+                                      );
+                                    },
+                                  )
+                            : const Center(
+                                child: Text(
+                                  'An error occurred. Please try again.',
+                                ),
+                              ),
+                  ),
+                ),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
