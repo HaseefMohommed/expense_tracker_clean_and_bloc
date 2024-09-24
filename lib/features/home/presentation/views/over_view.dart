@@ -13,14 +13,14 @@ import 'package:svg_flutter/svg.dart';
 import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
 import 'package:expesne_tracker_app/utils/enums/income_category.dart';
 
-class OverViewPage extends StatefulWidget {
-  const OverViewPage({super.key});
+class OverView extends StatefulWidget {
+  const OverView({super.key});
 
   @override
-  State<OverViewPage> createState() => _OverViewPageState();
+  State<OverView> createState() => _OverViewState();
 }
 
-class _OverViewPageState extends State<OverViewPage> {
+class _OverViewState extends State<OverView> {
   int _currentIndex = 0;
 
   @override

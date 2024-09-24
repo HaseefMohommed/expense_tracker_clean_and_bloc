@@ -4,6 +4,7 @@ import 'package:expesne_tracker_app/resources/ui_components/app_drop_down/app_dr
 import 'package:expesne_tracker_app/utils/enums/app_status.dart';
 import 'package:expesne_tracker_app/utils/enums/income_category.dart';
 import 'package:expesne_tracker_app/utils/enums/validity_status.dart';
+import 'package:expesne_tracker_app/utils/extentions/locale_extention.dart';
 import 'package:flutter/material.dart';
 import 'package:expesne_tracker_app/features/common/pages/root_background.dart';
 import 'package:expesne_tracker_app/resources/ui_components/date_picker/table_calender_picker.dart';
@@ -82,6 +83,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     return BlocConsumer<SavingsCubit, SavingsState>(
       listener: (context, state) {
         if (state.appState == AppStatus.success) {
@@ -94,11 +96,11 @@ class _AddIncomePageState extends State<AddIncomePage> {
         return AbsorbPointer(
           absorbing: state.appState == AppStatus.loading,
           child: RootBackground(
-            pageTitle: 'Add Income',
+            pageTitle: locale.add_item('Income'),
             onPressed: _validateAndSubmit,
             buttonTitle: state.appState == AppStatus.loading
-                ? 'Please wait..'
-                : 'Add Income',
+                ? locale.please_wait
+                : locale.add_item('Income'),
             children: [
               TableCalenderPicker(
                 onDateSelected: (value) {
@@ -108,40 +110,40 @@ class _AddIncomePageState extends State<AddIncomePage> {
                 },
                 errorText: switch (formValidityStatus['date']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Date is required',
-                  ValidityStatus.invalid => 'Invalid date',
+                  ValidityStatus.empty => locale.requird_field,
+                  ValidityStatus.invalid => locale.please_select_valid('Date'),
                   _ => null,
                 },
               ),
               const SizedBox(height: 16),
               AppTextField(
                 controller: _incomeTitleController,
-                hintText: 'Salary',
-                labelText: 'Income Title',
+                hintText: locale.salary,
+                labelText: locale.item_title('Income'),
                 errorText: switch (formValidityStatus['title']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Title is required',
-                  ValidityStatus.invalid => 'Invalid title',
+                  ValidityStatus.empty => locale.requird_field,
+                  ValidityStatus.invalid => locale.please_enter_valid('title'),
                   _ => null,
                 },
               ),
               const SizedBox(height: 16),
               AppTextField(
                 controller: _incomeAmountController,
-                hintText: '1000',
-                labelText: 'Amount',
+                hintText: locale.thousand,
+                labelText: locale.amount,
                 suffixIconVisible: AssetsPaths.dollerSign,
                 isenableNumberPad: true,
                 errorText: switch (formValidityStatus['amount']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Amount is required',
-                  ValidityStatus.invalid => 'Invalid amount',
+                  ValidityStatus.empty => locale.requird_field,
+                  ValidityStatus.invalid => locale.please_enter_valid('amount'),
                   _ => null,
                 },
               ),
               const SizedBox(height: 16),
               AppDropDown<IncomeCategory>(
-                title: 'Income Category',
+                title: locale.item_category('Income'),
                 items: IncomeCategory.values,
                 itemAsString: (IncomeCategory category) =>
                     category.toString().split('.').last.toLowerCase(),
@@ -152,8 +154,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
                 },
                 errorText: switch (formValidityStatus['incomeCategory']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Category is required',
-                  ValidityStatus.invalid => 'Invalid category',
+                  ValidityStatus.empty => locale.requird_field,
+                  ValidityStatus.invalid => locale.please_select_valid('Income Category'),
                   _ => null,
                 },
               ),

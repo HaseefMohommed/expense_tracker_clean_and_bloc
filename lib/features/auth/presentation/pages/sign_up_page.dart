@@ -89,7 +89,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               errorText: switch (state.nameValidityStatus) {
                                 ValidityStatus.valid || null => null,
                                 ValidityStatus.empty => locale.requird_field,
-                                ValidityStatus.invalid => locale.invaild_name,
+                                ValidityStatus.invalid => locale.please_enter_valid('Name.'),
                               },
                             ),
                             const SizedBox(height: 16),
@@ -100,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               errorText: switch (state.emailValidityStatus) {
                                 ValidityStatus.valid || null => null,
                                 ValidityStatus.empty => locale.requird_field,
-                                ValidityStatus.invalid => locale.email
+                                ValidityStatus.invalid => locale.please_enter_valid('Email.')
                               },
                             ),
                             const SizedBox(height: 16),
@@ -115,7 +115,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ValidityStatus.valid || null => null,
                                 ValidityStatus.empty => locale.requird_field,
                                 ValidityStatus.invalid =>
-                                  locale.invaild_password
+                                  locale.please_enter_valid('Password.')
                               },
                             ),
                             const SizedBox(height: 24),

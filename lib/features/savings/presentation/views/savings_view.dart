@@ -2,20 +2,20 @@ import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/savings_cubit.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/goals/your_goals_page.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/widgets/goal_list_tile.dart';
+import 'package:expesne_tracker_app/utils/extentions/locale_extention.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
 import 'package:intl/intl.dart';
 
-class SavingsPage extends StatefulWidget {
-  static String pageTitle = 'Savings';
-  const SavingsPage({super.key});
+class SavingsView extends StatefulWidget {
+  const SavingsView({super.key});
 
   @override
-  State<SavingsPage> createState() => _SavingsPageState();
+  State<SavingsView> createState() => _SavingsViewState();
 }
 
-class _SavingsPageState extends State<SavingsPage> {
+class _SavingsViewState extends State<SavingsView> {
   @override
   void initState() {
     super.initState();
@@ -28,6 +28,7 @@ class _SavingsPageState extends State<SavingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     return BlocConsumer<SavingsCubit, SavingsState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -37,9 +38,10 @@ class _SavingsPageState extends State<SavingsPage> {
               padding: const EdgeInsets.all(AppTheme.primaryPadding),
               child: Column(
                 children: [
-                  const Text(
-                    'Current Savings',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  Text(
+                    locale.current_savings,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 12),
                   Container(
@@ -95,9 +97,9 @@ class _SavingsPageState extends State<SavingsPage> {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        const Text(
-                          'Goal for this Month',
-                          style: TextStyle(
+                        Text(
+                          locale.goal_for_this_month,
+                          style: const TextStyle(
                             fontSize: 14,
                             color: AppTheme.secondaryColor,
                           ),
@@ -112,11 +114,13 @@ class _SavingsPageState extends State<SavingsPage> {
                                 TabBar(
                                   tabs: [
                                     Tab(
-                                        text:
-                                            '\$ ${state.monthlyGoalAmount['GoalAmount']}'),
+                                      text:
+                                          '\$ ${state.monthlyGoalAmount['GoalAmount']}',
+                                    ),
                                     Tab(
-                                        text:
-                                            '\$ ${state.monthlyGoalAmount['SavedAmount']}'),
+                                      text:
+                                          '\$ ${state.monthlyGoalAmount['SavedAmount']}',
+                                    ),
                                   ],
                                   indicatorSize: TabBarIndicatorSize.tab,
                                   indicator: BoxDecoration(
@@ -153,9 +157,9 @@ class _SavingsPageState extends State<SavingsPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Your Goals',
-                        style: TextStyle(
+                      Text(
+                        locale.your_goals,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -173,9 +177,9 @@ class _SavingsPageState extends State<SavingsPage> {
                   ),
                   const SizedBox(height: 12),
                   state.goalsList.isEmpty
-                      ? const Text(
-                          'No goals available',
-                          style: TextStyle(
+                      ? Text(
+                          locale.no_goals_available,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: AppTheme.secondaryColor,

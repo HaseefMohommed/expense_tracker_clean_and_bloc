@@ -106,20 +106,20 @@ class _AddGoalPageState extends State<AddGoalPage> {
         return AbsorbPointer(
           absorbing: state.appState == AppStatus.loading,
           child: RootBackground(
-            pageTitle: locale.add_goal,
+            pageTitle: locale.add_item('Goal'),
             buttonTitle: state.appState == AppStatus.loading
                 ? locale.please_wait
-                : locale.add_goal,
+                : locale.add_item('Goal'),
             onPressed: _validateAndSubmit,
             children: [
               AppTextField(
                 hintText: locale.new_house,
-                labelText: locale.goal_title,
+                labelText: locale.item_title('Goal'),
                 controller: _goalTitleController,
                 errorText: switch (formValidityStatus['title']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Title is required',
-                  ValidityStatus.invalid => 'Invalid title',
+                  ValidityStatus.empty => locale.requird_field,
+                  ValidityStatus.invalid => locale.please_enter_valid('title'),
                   _ => null,
                 },
               ),
@@ -132,14 +132,14 @@ class _AddGoalPageState extends State<AddGoalPage> {
                 isenableNumberPad: true,
                 errorText: switch (formValidityStatus['amount']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Amount is required',
-                  ValidityStatus.invalid => 'Invalid amount',
+                  ValidityStatus.empty =>  locale.requird_field,
+                  ValidityStatus.invalid => locale.please_enter_valid('amount'),
                   _ => null,
                 },
               ),
               const SizedBox(height: 16),
               AppDropDown<GoalCategory>(
-                title: locale.category,
+                title: locale.item_category('Goal'),
                 items: GoalCategory.values,
                 itemAsString: (GoalCategory category) =>
                     category.toString().split('.').last.toLowerCase(),
@@ -150,8 +150,8 @@ class _AddGoalPageState extends State<AddGoalPage> {
                 },
                 errorText: switch (formValidityStatus['goalCategory']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Category is required',
-                  ValidityStatus.invalid => 'Invalid category',
+                  ValidityStatus.empty =>  locale.requird_field,
+                  ValidityStatus.invalid => locale.please_select_valid('Goal Category'),
                   _ => null,
                 },
               ),
@@ -167,8 +167,8 @@ class _AddGoalPageState extends State<AddGoalPage> {
                 },
                 errorText: switch (formValidityStatus['contributionType']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Contribution type is required',
-                  ValidityStatus.invalid => 'Invalid contribution type',
+                  ValidityStatus.empty =>  locale.requird_field,
+                  ValidityStatus.invalid => locale.please_select_valid('Contribution Type'),
                   _ => null,
                 },
               ),
@@ -182,8 +182,8 @@ class _AddGoalPageState extends State<AddGoalPage> {
                 },
                 errorText: switch (formValidityStatus['date']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Date is required',
-                  ValidityStatus.invalid => 'Invalid date format',
+                  ValidityStatus.empty =>  locale.requird_field,
+                  ValidityStatus.invalid => locale.please_select_valid('Date'),
                   _ => null,
                 },
               ),

@@ -74,7 +74,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   errorText: switch (state.emailValidityStatus) {
                     ValidityStatus.valid || null => null,
                     ValidityStatus.empty => locale.requird_field,
-                    ValidityStatus.invalid => locale.invaild_password
+                    ValidityStatus.invalid => locale.please_enter_valid('Password.')
                   },
                 ),
                 const Spacer(),

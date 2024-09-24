@@ -1,12 +1,12 @@
 import 'package:expesne_tracker_app/features/common/cubit/bottom_nav_cubit.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/goals/add_goal_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/views/savings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expesne_tracker_app/core/theme.dart';
-import 'package:expesne_tracker_app/features/home/presentation/pages/over_view_page.dart';
-import 'package:expesne_tracker_app/features/notification/presentation/pages/notification_page.dart';
-import 'package:expesne_tracker_app/features/profile/presentation/pages/profile_page.dart';
-import 'package:expesne_tracker_app/features/savings/presentation/pages/goals/savings_page.dart';
+import 'package:expesne_tracker_app/features/home/presentation/views/over_view.dart';
+import 'package:expesne_tracker_app/features/notification/presentation/views/notification_view.dart';
+import 'package:expesne_tracker_app/features/profile/presentation/views/profile_view.dart';
 import 'package:expesne_tracker_app/resources/ui_components/bottom_navbar/bottom_nav_bar.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,10 +15,10 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final List<Widget> pageViews = [
-    const OverViewPage(),
-    const SavingsPage(),
-    const NotificationPage(),
-    const ProfilePage(),
+    const OverView(),
+    const SavingsView(),
+    const NotificationView(),
+    const ProfileView(),
   ];
 
   final List<String> pageTitles = [

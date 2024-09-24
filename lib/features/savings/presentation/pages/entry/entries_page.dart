@@ -3,6 +3,7 @@ import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/entries_list_tile.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/savings_cubit.dart';
 import 'package:expesne_tracker_app/utils/enums/app_status.dart';
+import 'package:expesne_tracker_app/utils/extentions/locale_extention.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
@@ -25,9 +26,15 @@ class _EntriesPageState extends State<EntriesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Entries', style: TextStyle(fontWeight: FontWeight.w600)),
+        title: Text(
+          locale.latest_entries,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -35,18 +42,26 @@ class _EntriesPageState extends State<EntriesPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Latest Entries', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+             Text(
+              locale.latest_entries,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 12),
             BlocConsumer<SavingsCubit, SavingsState>(
-              listener: (context, state) {
-                
-              },
+              listener: (context, state) {},
               builder: (context, state) {
                 return state.appState == AppStatus.loading
                     ? const Center(child: CircularProgressIndicator())
                     : state.appState == AppStatus.success
                         ? state.entriesList.isEmpty
-                            ? const Center(child: Text('No entries yet. Add some entries!'))
+                            ?  Center(
+                                child: Text(
+                                  locale.no_items_yet('entries'),
+                                ),
+                              )
                             : ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: state.entriesList.length,
@@ -58,12 +73,18 @@ class _EntriesPageState extends State<EntriesPage> {
                                     amount: entry.amount.toString(),
                                     paymentMethod: entry.paymentMethod?.name,
                                     iconPath: entry.paymentMethod != null
-                                        ? entry.expenseCategory?.icon ?? AssetsPaths.shopping
-                                        : entry.incomeCategory?.icon ?? AssetsPaths.shopping,
+                                        ? entry.expenseCategory?.icon ??
+                                            AssetsPaths.shopping
+                                        : entry.incomeCategory?.icon ??
+                                            AssetsPaths.shopping,
                                   );
                                 },
                               )
-                        : const Center(child: Text('An error occurred. Please try again.'));
+                        :  Center(
+                            child: Text(
+                              locale.an_error_occurred,
+                            ),
+                          );
               },
             ),
           ],

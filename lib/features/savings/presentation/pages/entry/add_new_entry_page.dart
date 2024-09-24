@@ -6,6 +6,7 @@ import 'package:expesne_tracker_app/features/home/presentation/widgets/component
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/option_card.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_income_page.dart';
 import 'package:expesne_tracker_app/utils/enums/app_status.dart';
+import 'package:expesne_tracker_app/utils/extentions/locale_extention.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
@@ -28,10 +29,16 @@ class _AddNewEntryPageState extends State<AddNewEntryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     return Scaffold(
       backgroundColor: AppTheme.secondaryPaleColor,
       appBar: AppBar(
-        title: const Text('Add', style: TextStyle(fontWeight: FontWeight.w600)),
+        title: Text(
+          locale.add_item(''),
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         centerTitle: true,
       ),
       body: Column(
@@ -42,14 +49,14 @@ class _AddNewEntryPageState extends State<AddNewEntryPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 OptionCard(
-                  title: 'Add Income',
+                  title: locale.add_item('Income'),
                   onTap: () => Navigator.pushNamed(
                     context,
                     AddIncomePage.routeName,
                   ),
                 ),
                 OptionCard(
-                  title: 'Add Expense',
+                  title: locale.add_item('Expense'),
                   backgroundColor: AppTheme.primaryColor,
                   textColor: Colors.white,
                   onTap: () => Navigator.pushNamed(
@@ -70,17 +77,17 @@ class _AddNewEntryPageState extends State<AddNewEntryPage> {
               ),
               child: Column(
                 children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Latest Entries',
-                        style: TextStyle(
+                        locale.latest_entries,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Icon(Icons.more_horiz),
+                      const Icon(Icons.more_horiz),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -91,9 +98,10 @@ class _AddNewEntryPageState extends State<AddNewEntryPage> {
                           ? const Center(child: CircularProgressIndicator())
                           : state.appState == AppStatus.success
                               ? state.entriesList.isEmpty
-                                  ? const Center(
+                                  ? Center(
                                       child: Text(
-                                          'No entries yet. Add some entries!'))
+                                      locale.no_items_yet('entries'),
+                                    ))
                                   : ListView.builder(
                                       itemCount: state.entriesList.length,
                                       itemBuilder: (context, index) {
@@ -112,9 +120,10 @@ class _AddNewEntryPageState extends State<AddNewEntryPage> {
                                         );
                                       },
                                     )
-                              : const Center(
+                              : Center(
                                   child: Text(
-                                      'An error occurred. Please try again.')),
+                                  locale.an_error_occurred,
+                                )),
                     ),
                   ),
                 ],

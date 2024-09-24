@@ -86,7 +86,7 @@ class _SignInPageState extends State<SignInPage> {
                               errorText: switch (state.emailValidityStatus) {
                                 ValidityStatus.valid || null => null,
                                 ValidityStatus.empty => locale.requird_field,
-                                ValidityStatus.invalid => locale.invaild_email
+                                ValidityStatus.invalid => locale.please_enter_valid('Email.')
                               },
                             ),
                             const SizedBox(height: 16),
@@ -101,7 +101,7 @@ class _SignInPageState extends State<SignInPage> {
                                 ValidityStatus.valid || null => null,
                                 ValidityStatus.empty => locale.requird_field,
                                 ValidityStatus.invalid =>
-                                  locale.invaild_password
+                                  locale.please_enter_valid('Password.')
                               },
                             ),
                             const SizedBox(height: 24),

@@ -5,6 +5,7 @@ import 'package:expesne_tracker_app/utils/enums/app_status.dart';
 import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
 import 'package:expesne_tracker_app/utils/enums/payment_method.dart';
 import 'package:expesne_tracker_app/utils/enums/validity_status.dart';
+import 'package:expesne_tracker_app/utils/extentions/locale_extention.dart';
 import 'package:flutter/material.dart';
 import 'package:expesne_tracker_app/features/common/pages/root_background.dart';
 import 'package:expesne_tracker_app/resources/ui_components/date_picker/table_calender_picker.dart';
@@ -87,6 +88,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     return BlocConsumer<SavingsCubit, SavingsState>(
       listener: (context, state) {
         if (state.appState == AppStatus.success) {
@@ -99,11 +101,11 @@ class _AddExpensePageState extends State<AddExpensePage> {
         return AbsorbPointer(
           absorbing: state.appState == AppStatus.loading,
           child: RootBackground(
-            pageTitle: 'Add Expense',
+            pageTitle: locale.add_item('Expense'),
             onPressed: _validateAndSubmit,
             buttonTitle: state.appState == AppStatus.loading
-                ? 'Please wait..'
-                : 'Add Expense',
+                ? locale.please_wait
+                : locale.add_item('Expense'),
             children: [
               TableCalenderPicker(
                 onDateSelected: (value) {
@@ -113,40 +115,40 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 },
                 errorText: switch (formValidityStatus['date']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Date is required',
-                  ValidityStatus.invalid => 'Invalid date',
+                  ValidityStatus.empty => locale.requird_field,
+                  ValidityStatus.invalid => locale.please_select_valid('Date'),
                   _ => null,
                 },
               ),
               const SizedBox(height: 16),
               AppTextField(
                 controller: _expenseTitleController,
-                hintText: 'Family Expense',
-                labelText: 'Expense Title',
+                hintText: locale.family_expense,
+                labelText: locale.item_title('Expense'),
                 errorText: switch (formValidityStatus['title']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Title is required',
-                  ValidityStatus.invalid => 'Invalid title',
+                  ValidityStatus.empty => locale.requird_field,
+                  ValidityStatus.invalid => locale.please_enter_valid('Title'),
                   _ => null,
                 },
               ),
               const SizedBox(height: 16),
               AppTextField(
                 controller: _expenseAmountController,
-                hintText: '1000',
-                labelText: 'Amount',
+                hintText: locale.thousand,
+                labelText: locale.amount,
                 suffixIconVisible: AssetsPaths.dollerSign,
                 isenableNumberPad: true,
                 errorText: switch (formValidityStatus['amount']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Amount is required',
-                  ValidityStatus.invalid => 'Invalid amount',
+                  ValidityStatus.empty => locale.requird_field,
+                  ValidityStatus.invalid => locale.please_enter_valid('Amount'),
                   _ => null,
                 },
               ),
               const SizedBox(height: 16),
               AppDropDown<ExpenseCategory>(
-                title: 'Expense Category',
+                title: locale.item_category('Expense'),
                 items: ExpenseCategory.values,
                 itemAsString: (ExpenseCategory category) =>
                     category.toString().split('.').last.toLowerCase(),
@@ -157,13 +159,13 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 },
                 errorText: switch (formValidityStatus['expenseCategory']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Category is required',
-                  ValidityStatus.invalid => 'Invalid category',
+                  ValidityStatus.empty => locale.requird_field,
+                  ValidityStatus.invalid => locale.please_select_valid('Expense Category'),
                   _ => null,
                 },
               ),
               AppDropDown<PaymentMethod>(
-                title: 'Payment Method',
+                title: locale.payment_method,
                 items: PaymentMethod.values,
                 itemAsString: (PaymentMethod paymentMethod) =>
                     paymentMethod.toString().split('.').last.toLowerCase(),
@@ -174,8 +176,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 },
                 errorText: switch (formValidityStatus['paymentMethod']) {
                   ValidityStatus.valid => null,
-                  ValidityStatus.empty => 'Payment method is required',
-                  ValidityStatus.invalid => 'Invalid payment method',
+                  ValidityStatus.empty => locale.requird_field,
+                  ValidityStatus.invalid => locale.please_select_valid('Payment Method'),
                   _ => null,
                 },
               ),

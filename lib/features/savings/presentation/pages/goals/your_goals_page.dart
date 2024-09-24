@@ -2,6 +2,7 @@ import 'package:expesne_tracker_app/core/theme.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/savings_cubit.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/widgets/goal_list_tile.dart';
 import 'package:expesne_tracker_app/utils/enums/app_status.dart';
+import 'package:expesne_tracker_app/utils/extentions/locale_extention.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:expesne_tracker_app/utils/enums/goal_category.dart';
@@ -23,11 +24,12 @@ class _YourGoalsPageState extends State<YourGoalsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Your Goals',
-          style: TextStyle(
+        title: Text(
+          locale.your_goals,
+          style: const TextStyle(
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -38,9 +40,9 @@ class _YourGoalsPageState extends State<YourGoalsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'All Your Goals',
-              style: TextStyle(
+            Text(
+              locale.all_your_goals,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -53,8 +55,11 @@ class _YourGoalsPageState extends State<YourGoalsPage> {
                     ? const Center(child: CircularProgressIndicator())
                     : state.appState == AppStatus.success
                         ? state.goalsList.isEmpty
-                            ? const Center(
-                                child: Text('No goals yet. Add some goals!'))
+                            ? Center(
+                                child: Text(
+                                  locale.no_goals_available,
+                                ),
+                              )
                             : ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: state.goalsList.length,
@@ -68,9 +73,11 @@ class _YourGoalsPageState extends State<YourGoalsPage> {
                                   );
                                 },
                               )
-                        : const Center(
-                            child:
-                                Text('An error occurred. Please try again.'));
+                        : Center(
+                            child: Text(
+                              locale.an_error_occurred,
+                            ),
+                          );
               },
             ),
           ],

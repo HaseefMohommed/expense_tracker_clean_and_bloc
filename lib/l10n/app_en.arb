@@ -16,9 +16,6 @@
     "already_have_account":"Already Have an Account? ",
     "sign_in_here": "Sign In Here.",
     "requird_field":"Required Field",
-    "invaild_name":"Invalid Name",
-    "invaild_email":"Invalid Email",
-    "invaild_password":"Invalid Password",
     "password_updated": "Password Updated!",
     "your_password_has_been_setup_sucessfully": "Your password has been setup successfully",
     "back_to_log_in": "Back to Log In",
@@ -32,17 +29,33 @@
     "get_your_notifications":"Get your notifications or alert when you do the over expenses",
     "esay_to_track_and_analyze": "Easy to Track and Analyze",
     "tracking_your_expense": "Tracking your expense help make sure you don't overspend",
-    "add_goal":"Add Goal",
     "new_house":"New House",
-    "goal_title": "Goal title",
+    "item_title": "{item} title",
     "amount": "Amount",
     "thousand": "1000",
-    "category": "Category",
+    "item_category": "{item} Category",
     "contribution_type":"Contribution Type",
     "dead_line": "Dead line",
     "yearly":"Yearly",
     "monthly" :"Monthly",
-    "weekly":"Weekly"
+    "weekly":"Weekly",
+    "current_savings" : "Current Savings",
+    "goal_for_this_month" : "Goal for this Month",
+    "your_goals" : "Your Goals",
+    "no_goals_available":"No goals available",
+    "all_your_goals" : "All Your Goals",
+    "no_items_yet" :"No {item} yet. Add some {item}!",
+    "an_error_occurred":"An error occurred. Please try again.",
+    "please_enter_valid": "Please Enter a valid {field}",
+    "please_select_valid": "Please Select a valid {field}",
+    "latest_entries" : "Latest Entries",
+    "add_item": "Add {item}",
+    "payment_method": "Payment Method",
+    "salary": "Salary",
+    "family_expense" : "Family Expense"
+    
+
+    
 
 
 }
