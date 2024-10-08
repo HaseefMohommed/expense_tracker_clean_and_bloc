@@ -1,22 +1,20 @@
-import 'package:expesne_tracker_app/constants/assets_paths.dart';
-
 enum PaymentMethod { creditCard, debitCard, paypal, bankTransfer }
 
 extension PaymentMethodExtension on PaymentMethod {
-  String get icon {
+  String get displayName {
     switch (this) {
       case PaymentMethod.creditCard:
-        return AssetsPaths.salary;
+        return 'Credit Card';
       case PaymentMethod.debitCard:
-        return AssetsPaths.salary;
+        return 'Debit Card';
       case PaymentMethod.paypal:
-        return AssetsPaths.salary;
+        return 'PayPal';
       case PaymentMethod.bankTransfer:
-        return AssetsPaths.salary;
+        return 'Bank Transfer';
     }
   }
 }
 
-String getIconForPaymentMethod(PaymentMethod method) {
-  return method.icon;
+String getDisplayNameForPaymentMethod(PaymentMethod method) {
+  return method.displayName;
 }

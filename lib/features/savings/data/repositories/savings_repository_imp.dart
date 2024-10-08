@@ -139,4 +139,36 @@ class SavingsRepositoryImp implements SavingsRepository {
       return Left(UnexpectedFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<EntryEntity>>> fetchExpensesForDay({
+    required DateTime date,
+  }) async {
+    try {
+      final result = await savingsDatasource.fetchExpensesForDay(
+        date: date,
+      );
+      return Right(result);
+    } on FirebaseException catch (_) {
+      return Left(ServerFailure());
+    } catch (e) {
+      return Left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<ExpenseCategory, double>>>
+      fetchTotalExpenseByCategory({
+    required DateTime date,
+  }) async {
+    try {
+      final result =
+          await savingsDatasource.fetchTotalExpenseByCategory(date: date);
+      return Right(result);
+    } on FirebaseException catch (_) {
+      return Left(ServerFailure());
+    } catch (e) {
+      return Left(UnexpectedFailure());
+    }
+  }
 }

@@ -1,9 +1,11 @@
 import 'package:expesne_tracker_app/features/savings/domain/entities/entry_entity.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/add_entry.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_all_entries.dart';
+import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_expenses_for_day.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_monthly_amount.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_saved_amount.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_total_expense.dart';
+import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_total_expense_by_category.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_total_income.dart';
 import 'package:expesne_tracker_app/utils/enums/app_status.dart';
 import 'package:expesne_tracker_app/utils/enums/expense_category.dart';
@@ -30,6 +32,8 @@ class SavingsCubit extends Cubit<SavingsState> {
   final FetchTotalExpense fetchTotalExpense;
   final FetchSavedAmount fetchSavedAmount;
   final FetchMonthlyGoalAmount fetchMonthlyGoalAmount;
+  final FetchExpensesForDay fetchEntriesForDay;
+  final FetchTotalExpenseByCategory fetchTotalExpenseByCategory;
   SavingsCubit({
     required this.addGoal,
     required this.addEntry,
@@ -39,6 +43,8 @@ class SavingsCubit extends Cubit<SavingsState> {
     required this.fetchTotalExpense,
     required this.fetchSavedAmount,
     required this.fetchMonthlyGoalAmount,
+    required this.fetchEntriesForDay,
+    required this.fetchTotalExpenseByCategory,
   }) : super(const SavingsState());
 
   void validateFields({
@@ -273,6 +279,45 @@ class SavingsCubit extends Cubit<SavingsState> {
       (monthlyGoalAmount) => emit(state.copyWith(
         appState: AppStatus.success,
         monthlyGoalAmount: monthlyGoalAmount,
+      )),
+    );
+  }
+
+  Future<void> fetchEntriesForSpecificDay({
+    required DateTime date,
+  }) async {
+    emit(state.copyWith(appState: AppStatus.loading));
+
+    final result = await fetchEntriesForDay(date: date);
+
+    result.fold(
+      (failure) => emit(state.copyWith(
+        appState: AppStatus.failure,
+        failure: failure,
+      )),
+      (entriesForDay) => emit(state.copyWith(
+        appState: AppStatus.success,
+        entriesForSpecificDay: entriesForDay,
+      )),
+    );
+  }
+
+  Future<void> fetchDailyExpenseByCategory({
+    required DateTime date,
+  }) async {
+    emit(state.copyWith(appState: AppStatus.loading));
+    final result = await fetchTotalExpenseByCategory(
+      date: date,
+    );
+
+    result.fold(
+      (failure) => emit(state.copyWith(
+        appState: AppStatus.failure,
+        failure: failure,
+      )),
+      (dailyExpenseAmount) => emit(state.copyWith(
+        appState: AppStatus.success,
+        dailyExpenseAmount: dailyExpenseAmount,
       )),
     );
   }

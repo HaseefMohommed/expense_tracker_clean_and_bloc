@@ -35,6 +35,12 @@ abstract class SavingsDatasource {
   Future<int> fetchTotalExpense();
   Future<int> fetchSavedAmount();
   Future<Map<String, int>> fetchMonthlyGoalAmount();
+  Future<List<EntryEntity>> fetchExpensesForDay({
+    required DateTime date,
+  });
+  Future<Map<ExpenseCategory, double>> fetchTotalExpenseByCategory({
+    required DateTime date,
+  });
 }
 
 class SavingsDatasourceImp extends SavingsDatasource {
@@ -251,6 +257,77 @@ class SavingsDatasourceImp extends SavingsDatasource {
         'GoalAmount': monthlyGoalAmount,
         'SavedAmount': monthlySavedAmount,
       };
+    } on FirebaseException catch (_) {
+      throw ServerFailure();
+    } catch (e) {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<List<EntryEntity>> fetchExpensesForDay({
+    required DateTime date,
+  }) async {
+    try {
+      final String startOfDay =
+          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+
+      final DateTime nextDay = date.add(const Duration(days: 1));
+      final String startOfNextDay =
+          '${nextDay.year}-${nextDay.month.toString().padLeft(2, '0')}-${nextDay.day.toString().padLeft(2, '0')}';
+
+      final QuerySnapshot entriesSnapshot = await firebaseFirestore
+          .collection('entries')
+          .where('expenseCategory', isNull: false)
+          .where('addedDate', isGreaterThanOrEqualTo: startOfDay)
+          .where('addedDate', isLessThan: startOfNextDay)
+          .get();
+
+      return entriesSnapshot.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        data['id'] = doc.id;
+        return EntryModel.fromJson(data);
+      }).toList();
+    } on FirebaseException catch (_) {
+      throw ServerFailure();
+    } catch (e) {
+      throw ServerFailure();
+    }
+  }
+
+  @override
+  Future<Map<ExpenseCategory, double>> fetchTotalExpenseByCategory({
+    required DateTime date,
+  }) async {
+    try {
+      final String startOfDay =
+          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+
+      final DateTime nextDay = date.add(const Duration(days: 1));
+      final String startOfNextDay =
+          '${nextDay.year}-${nextDay.month.toString().padLeft(2, '0')}-${nextDay.day.toString().padLeft(2, '0')}';
+
+      final QuerySnapshot expenseSnapshot = await firebaseFirestore
+          .collection('entries')
+          .where('expenseCategory', isNull: false)
+          .where('addedDate', isGreaterThanOrEqualTo: startOfDay)
+          .where('addedDate', isLessThan: startOfNextDay)
+          .get();
+
+      Map<ExpenseCategory, double> expensesByCategory = {};
+
+      for (var doc in expenseSnapshot.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        final category = ExpenseCategory.values.firstWhere(
+          (e) => e.toString() == 'ExpenseCategory.${data['expenseCategory']}',
+        );
+        final amount = (data['amount'] as num).toDouble();
+
+        expensesByCategory[category] =
+            (expensesByCategory[category] ?? 0) + amount;
+      }
+
+      return expensesByCategory;
     } on FirebaseException catch (_) {
       throw ServerFailure();
     } catch (e) {

@@ -13,6 +13,8 @@ class SavingsState with _$SavingsState {
     @Default(0) int totalExpense,
     @Default(0) int savedAmount,
     @Default({}) Map<String, int> monthlyGoalAmount,
+    @Default([]) List<EntryEntity> entriesForSpecificDay,
+     @Default({}) Map<ExpenseCategory, double> dailyExpenseAmount,
     Failure? failure,
   }) = _SavingsState;
 

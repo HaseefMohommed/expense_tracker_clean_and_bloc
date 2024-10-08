@@ -18,9 +18,11 @@ import 'package:expesne_tracker_app/features/savings/domain/usecases/add_entry.d
 import 'package:expesne_tracker_app/features/savings/domain/usecases/add_goal.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_all_entries.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_all_goals.dart';
+import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_expenses_for_day.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_monthly_amount.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_saved_amount.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_total_expense.dart';
+import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_total_expense_by_category.dart';
 import 'package:expesne_tracker_app/features/savings/domain/usecases/fetch_total_income.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/bloc/cubit/savings_cubit.dart';
 import 'package:expesne_tracker_app/firebase_options.dart';
@@ -181,6 +183,18 @@ Future<void> init(Environment environment) async {
     ),
   );
 
+  sl.registerFactory(
+    () => FetchExpensesForDay(
+      savingsRepository: sl(),
+    ),
+  );
+
+  sl.registerFactory(
+    () => FetchTotalExpenseByCategory(
+      savingsRepository: sl(),
+    ),
+  );
+
   // Bloc
   sl.registerFactory(
     () => SavingsCubit(
@@ -192,6 +206,8 @@ Future<void> init(Environment environment) async {
       fetchTotalIncome: sl(),
       fetchMonthlyGoalAmount: sl(),
       fetchSavedAmount: sl(),
+      fetchEntriesForDay: sl(),
+      fetchTotalExpenseByCategory: sl(),
     ),
   );
 }

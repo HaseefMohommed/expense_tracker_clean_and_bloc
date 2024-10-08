@@ -33,4 +33,11 @@ abstract class SavingsRepository {
   Future<Either<Failure, int>> fetchTotalExpense();
   Future<Either<Failure, int>> fetchSavedAmount();
   Future<Either<Failure, Map<String, int>>> fetchMonthlyGoalAmount();
+  Future<Either<Failure, List<EntryEntity>>> fetchExpensesForDay({
+    required DateTime date,
+  });
+  Future<Either<Failure, Map<ExpenseCategory, double>>>
+      fetchTotalExpenseByCategory({
+    required DateTime date,
+  });
 }

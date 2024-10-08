@@ -146,7 +146,7 @@ class _AddIncomePageState extends State<AddIncomePage> {
                 title: locale.item_category('Income'),
                 items: IncomeCategory.values,
                 itemAsString: (IncomeCategory category) =>
-                    category.toString().split('.').last.toLowerCase(),
+                    category.displayName.split('.').last,
                 onSelect: (option) {
                   setState(() {
                     selectedCategory = option;
@@ -155,7 +155,8 @@ class _AddIncomePageState extends State<AddIncomePage> {
                 errorText: switch (formValidityStatus['incomeCategory']) {
                   ValidityStatus.valid => null,
                   ValidityStatus.empty => locale.requird_field,
-                  ValidityStatus.invalid => locale.please_select_valid('Income Category'),
+                  ValidityStatus.invalid =>
+                    locale.please_select_valid('Income Category'),
                   _ => null,
                 },
               ),

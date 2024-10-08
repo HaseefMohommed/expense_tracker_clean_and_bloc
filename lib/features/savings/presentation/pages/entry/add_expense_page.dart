@@ -66,6 +66,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
           paymentMethod: selectedPaymentMethod,
           amount: amount,
         );
+    context.read<SavingsCubit>().fetchentries();
+    context.read<SavingsCubit>().fetchEntryTotals();
   }
 
   void _resetForm() {
@@ -151,7 +153,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 title: locale.item_category('Expense'),
                 items: ExpenseCategory.values,
                 itemAsString: (ExpenseCategory category) =>
-                    category.toString().split('.').last.toLowerCase(),
+                    category.displayName.split('.').last,
                 onSelect: (option) {
                   setState(() {
                     selectedCategory = option;
@@ -160,7 +162,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 errorText: switch (formValidityStatus['expenseCategory']) {
                   ValidityStatus.valid => null,
                   ValidityStatus.empty => locale.requird_field,
-                  ValidityStatus.invalid => locale.please_select_valid('Expense Category'),
+                  ValidityStatus.invalid =>
+                    locale.please_select_valid('Expense Category'),
                   _ => null,
                 },
               ),
@@ -168,7 +171,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 title: locale.payment_method,
                 items: PaymentMethod.values,
                 itemAsString: (PaymentMethod paymentMethod) =>
-                    paymentMethod.toString().split('.').last.toLowerCase(),
+                    paymentMethod.displayName.split('.').last,
                 onSelect: (option) {
                   setState(() {
                     selectedPaymentMethod = option;
@@ -177,7 +180,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 errorText: switch (formValidityStatus['paymentMethod']) {
                   ValidityStatus.valid => null,
                   ValidityStatus.empty => locale.requird_field,
-                  ValidityStatus.invalid => locale.please_select_valid('Payment Method'),
+                  ValidityStatus.invalid =>
+                    locale.please_select_valid('Payment Method'),
                   _ => null,
                 },
               ),

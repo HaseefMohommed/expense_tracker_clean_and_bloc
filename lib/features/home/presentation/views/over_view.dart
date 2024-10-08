@@ -6,6 +6,7 @@ import 'package:expesne_tracker_app/features/home/presentation/widgets/component
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/option_button.dart';
 import 'package:expesne_tracker_app/features/home/presentation/widgets/components/over_view_card.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/entries_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/total_expense_page.dart';
 import 'package:expesne_tracker_app/utils/enums/app_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -85,12 +86,17 @@ class _OverViewState extends State<OverView> {
                   OverviewCard(
                     title: 'Total Income',
                     amount: '${state.totalIncome}',
+                    onTap: () {},
                   ),
                   OverviewCard(
                     title: 'Total Expense',
                     amount: '${state.totalExpense}',
                     backgroundColor: AppTheme.primaryColor,
                     textColor: Colors.white,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      TotalExpensePage.routeName,
+                    ),
                   )
                 ],
               );
@@ -154,42 +160,40 @@ class _OverViewState extends State<OverView> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Expanded(
-                  child: BlocBuilder<SavingsCubit, SavingsState>(
-                    builder: (context, state) => state.appState ==
-                            AppStatus.loading
-                        ? const Center(child: CircularProgressIndicator())
-                        : state.appState == AppStatus.success
-                            ? state.entriesList.isEmpty
-                                ? const Center(
-                                    child: Text(
-                                      'No entries yet. Add some entries!',
-                                    ),
-                                  )
-                                : ListView.builder(
-                                    itemCount: state.entriesList.length,
-                                    itemBuilder: (context, index) {
-                                      final entry = state.entriesList[index];
-                                      return EntriesListTile(
-                                        title: entry.title,
-                                        date: entry.addedDate,
-                                        amount: entry.amount.toString(),
-                                        paymentMethod:
-                                            entry.paymentMethod?.name,
-                                        iconPath: entry.paymentMethod != null
-                                            ? entry.expenseCategory?.icon ??
-                                                AssetsPaths.shopping
-                                            : entry.incomeCategory?.icon ??
-                                                AssetsPaths.shopping,
-                                      );
-                                    },
-                                  )
-                            : const Center(
-                                child: Text(
-                                  'An error occurred. Please try again.',
-                                ),
+                BlocBuilder<SavingsCubit, SavingsState>(
+                  builder: (context, state) => state.appState ==
+                          AppStatus.loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : state.appState == AppStatus.success
+                          ? state.entriesList.isEmpty
+                              ? const Center(
+                                  child: Text(
+                                    'No entries yet. Add some entries!',
+                                  ),
+                                )
+                              : Column(
+                                  children: state.entriesList
+                                      .take(4)
+                                      .map((entry) => EntriesListTile(
+                                            title: entry.title,
+                                            date: entry.addedDate,
+                                            amount: entry.amount.toString(),
+                                            paymentMethod:
+                                                entry.paymentMethod?.name,
+                                            iconPath: entry.paymentMethod !=
+                                                    null
+                                                ? entry.expenseCategory?.icon ??
+                                                    AssetsPaths.shopping
+                                                : entry.incomeCategory?.icon ??
+                                                    AssetsPaths.shopping,
+                                          ))
+                                      .toList(),
+                                )
+                          : const Center(
+                              child: Text(
+                                'An error occurred. Please try again.',
                               ),
-                  ),
+                            ),
                 ),
               ],
             ),

@@ -4,6 +4,7 @@ import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/ad
 import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_income_page.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/add_new_entry_page.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/entries_page.dart';
+import 'package:expesne_tracker_app/features/savings/presentation/pages/entry/total_expense_page.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/goals/add_goal_page.dart';
 import 'package:expesne_tracker_app/features/savings/presentation/pages/goals/your_goals_page.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ abstract class AppRoutes {
     AddIncomePage.routeName: (context) => const AddIncomePage(),
     AddNewEntryPage.routeName: (context) => const AddNewEntryPage(),
     EntriesPage.routeName: (context) => const EntriesPage(),
+    TotalExpensePage.routeName: (context) => const TotalExpensePage(),
   };
 
   // Note: Named pages under routes will not trigger onGenerateRoute!
